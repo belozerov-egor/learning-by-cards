@@ -1,19 +1,10 @@
-.primary {
-  background-color: red;
-}
+.headerBlock {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-.secondary {
-  background-color: green;
-}
+  max-width: 80rem;
+  padding: 0.75rem 8.5rem;
 
-.tertiary {
-  background-color: blue;
-}
-
-.link {
-  background-color: yellow;
-}
-
-.fullWidth {
-  width: 100%;
+  background: var(--color-dark-700);
 }
