@@ -11,4 +11,9 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const ShowSlider: Story = {}
+export const ShowSlider: Story = {
+  args: {
+    minValue: 0,
+    maxValue: 100,
+  },
+}
