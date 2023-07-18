@@ -6,9 +6,44 @@ const meta = {
   title: 'Components/CheckboxDemo',
   component: CheckboxDemo,
   tags: ['autodocs'],
+  argTypes: {
+    variant: {
+      options: ['default', 'withText'],
+      control: { type: 'radio' },
+    },
+  },
 } satisfies Meta<typeof CheckboxDemo>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const ShowCheckbox: Story = {}
+export const ShowCheckbox: Story = {
+  args: {
+    variant: 'default',
+  },
+}
+
+export const DisabledCheckbox: Story = {
+  args: {
+    isChecked: true,
+    isDisabled: true,
+    variant: 'default',
+  },
+}
+
+export const CheckboxWithText: Story = {
+  args: {
+    isChecked: false,
+    variant: 'withText',
+    checkBoxText: 'Test',
+  },
+}
+
+export const DisabledCheckboxWithText: Story = {
+  args: {
+    isChecked: false,
+    variant: 'withText',
+    isDisabled: true,
+    checkBoxText: 'Test',
+  },
+}
