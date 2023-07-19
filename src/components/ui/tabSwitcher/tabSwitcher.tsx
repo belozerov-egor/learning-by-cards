@@ -8,18 +8,18 @@ const TabSwitcher = () => {
   ]
 
   return (
-    <Tabs.Root className={s.TabsRoot} defaultValue="tab1">
-      <Tabs.List className={s.TabsList} aria-label="Manage your account">
-        {tabsName.map(tab => {
+    <Tabs.Root className={s.tabsRoot} defaultValue="tab1">
+      <Tabs.List className={s.tabsList} aria-label="Manage your account">
+        {tabsName.map((tab, index) => {
           return (
-            <Tabs.Trigger className={s.TabsTrigger} value={tab.value}>
+            <Tabs.Trigger className={s.tabsTrigger} value={tab.value} key={index}>
               {tab.name}
             </Tabs.Trigger>
           )
         })}
       </Tabs.List>
-      <Tabs.Content className={s.TabsContent} value="tab1"></Tabs.Content>
-      <Tabs.Content className={s.TabsContent} value="tab2"></Tabs.Content>
+      <Tabs.Content className={s.tabsContent} value="tab1"></Tabs.Content>
+      <Tabs.Content className={s.tabsContent} value="tab2"></Tabs.Content>
     </Tabs.Root>
   )
 }
