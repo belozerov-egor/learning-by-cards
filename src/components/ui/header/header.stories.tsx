@@ -11,4 +11,5 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const ShowHeader: Story = {}
+export const ShowHeaderNotAuth: Story = { args: { isAuth: false } }
+export const ShowHeaderIsAuth: Story = { args: { isAuth: true } }
