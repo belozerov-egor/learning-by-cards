@@ -1,33 +1,58 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { Input } from './'
+import { Input } from './input.tsx'
 
 const meta = {
   title: 'Components/Input',
   component: Input,
   tags: ['autodocs'],
-  argTypes: {
-    variant: {
-      options: ['primary', 'password', 'search'],
-      control: { type: 'radio' },
-    },
-  },
 } satisfies Meta<typeof Input>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Primary: Story = {
+export const InputDefault: Story = {
   args: {
-    variant: 'primary',
-    placeholder: '123',
-    type: 'password',
+    placeholder: 'Default',
+    type: 'default',
+    disableValue: false,
   },
 }
-export const Search: Story = {
+export const InputDefaultError: Story = {
   args: {
-    variant: 'search',
-    placeholder: '123',
+    placeholder: 'Default',
+    type: 'default',
+    disableValue: false,
+    errorMessage: 'Error!',
+  },
+}
+export const InputPassword: Story = {
+  args: {
+    placeholder: 'Password',
+    type: 'password',
+    disableValue: false,
+  },
+}
+export const InputPasswordError: Story = {
+  args: {
+    placeholder: 'Password',
+    type: 'password',
+    disableValue: false,
+    errorMessage: 'Error!',
+  },
+}
+export const InputSearch: Story = {
+  args: {
+    placeholder: 'Search',
     type: 'search',
+    disableValue: false,
+  },
+}
+export const InputSearchError: Story = {
+  args: {
+    placeholder: 'Search',
+    type: 'search',
+    disableValue: false,
+    errorMessage: 'Error!',
   },
 }
