@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react'
 import { DropDownMenuDemo } from './dropDownMenu.tsx'
 
 const meta = {
-  title: 'Components/DropDownMenuDemo',
+  title: 'Components/DropDownMenu',
   component: DropDownMenuDemo,
   tags: ['autodocs'],
 } satisfies Meta<typeof DropDownMenuDemo>
