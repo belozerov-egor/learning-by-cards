@@ -1,46 +1,22 @@
-button {
-  all: unset;
-}
-
 .dropDownBlock {
   display: flex;
-  justify-content: flex-end;
+  justify-content: end;
+
+  button {
+    all: unset;
+    cursor: pointer;
+  }
+}
+
+.iconButton {
+  cursor: pointer;
 }
 
 .dropdownMenuContent {
-  will-change: transform, opacity;
-
   padding: 0.75rem;
-
-  background-color: var(--color-dark-500);
-  border: 1px solid var(--color-dark-100);
+  background-color: var(--color-dark-700);
+  border: 1px solid var(--color-dark-300);
   border-radius: 0.25rem;
-  box-shadow:
-    0 10px 38px -10px rgb(22 23 24 / 35%),
-    0 10px 20px -15px rgb(22 23 24 / 20%);
-
-  animation-duration: 400ms;
-  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.DropdownMenuContent[data-side='top'],
-.DropdownMenuSubContent[data-side='top'] {
-  animation-name: slideDownAndFade;
-}
-
-.DropdownMenuContent[data-side='right'],
-.DropdownMenuSubContent[data-side='right'] {
-  animation-name: slideLeftAndFade;
-}
-
-.DropdownMenuContent[data-side='bottom'],
-.DropdownMenuSubContent[data-side='bottom'] {
-  animation-name: slideUpAndFade;
-}
-
-.DropdownMenuContent[data-side='left'],
-.DropdownMenuSubContent[data-side='left'] {
-  animation-name: slideRightAndFade;
 }
 
 .dropdownMenuItem {
@@ -51,99 +27,58 @@ button {
   display: flex;
   align-items: center;
 
+  margin-bottom: -2px;
+
   font-size: 13px;
   line-height: 1;
-  color: violet;
+  color: black;
 
   border-radius: 3px;
   outline: none;
-}
 
-.DropdownMenuSubTrigger[data-state='open'] {
-  color: violet;
-  background-color: violet;
-}
+  .dropdownMenuItemInfo {
+    display: flex;
+    gap: 0.38rem;
+    align-items: center;
+  }
 
-.dropdownMenuItem[data-disabled],
-.DropdownMenuCheckboxItem[data-disabled],
-.DropdownMenuRadioItem[data-disabled],
-.DropdownMenuSubTrigger[data-disabled] {
-  pointer-events: none;
-  color: goldenrod;
-}
+  .dropdownMenuItemContent {
+    cursor: pointer;
+    display: flex;
+    gap: 0.38rem;
+    align-items: center;
+  }
 
-.dropdownMenuItem[data-highlighted],
-.DropdownMenuCheckboxItem[data-highlighted],
-.DropdownMenuRadioItem[data-highlighted],
-.DropdownMenuSubTrigger[data-highlighted] {
-  color: palevioletred;
-  background-color: violet;
-}
-
-.DropdownMenuLabel {
-  padding-left: 25px;
-  font-size: 12px;
-  line-height: 25px;
-  color: #22e584;
+  .info {
+    .email {
+      color: var(--color-dark-100);
+    }
+  }
 }
 
 .dropdownMenuSeparator {
   height: 1px;
-  margin: 5px;
-  background-color: var(--color-dark-100);
+  margin: 0.75rem 0;
+  background-color: var(--color-dark-300);
 }
 
-.DropdownMenuItemIndicator {
+.arrowBox {
+  fill: var(--color-dark-700);
+  stroke: var(--color-dark-300);
+  stroke-width: 2px;
+}
+
+.arrow {
   position: absolute;
-  left: 0;
+  top: -4px;
+  left: calc(50% - 3px);
+  transform: rotate(45deg);
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  width: 7px;
+  height: 7px;
 
-  width: 25px;
-}
-
-.dropdownMenuArrow {
-  position: relative;
-  width: 14px;
-  fill: var(--color-dark-500);
-
-  path {
-    stroke: #0a6638;
-  }
-}
-
-.iconButton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 2.25rem;
-  height: 2.25rem;
-
-  border-radius: 100%;
-  box-shadow: 0 2px 10px white;
-}
-
-.iconButton:hover {
-  box-shadow: 0 2px 10px greenyellow;
-}
-
-.iconButton:focus {
-  box-shadow: 0 0 0 2px chocolate;
-}
-
-.RightSlot {
-  margin-left: auto;
-  padding-left: 20px;
-  color: skyblue;
-}
-
-[data-highlighted] > .RightSlot {
-  color: white;
-}
-
-[data-disabled] .RightSlot {
-  color: yellow;
+  background-color: var(--color-dark-700);
+  border: 1px solid var(--color-dark-300);
+  border-top: none;
+  border-left: none;
 }
