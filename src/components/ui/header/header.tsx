@@ -1,8 +1,8 @@
 import { FC } from 'react'
 
-import { Logo } from '../../../common/assets/img'
+import { Avatar, Logo } from '../../../common/assets/img'
 import { Button } from '../button'
-import { DropDownMenuDemo } from '../dropDownMenu'
+import { DropDownMenuDemo, ProfileBlock } from '../dropDownMenu'
 import { Typography } from '../typography'
 
 import s from './header.module.scss'
@@ -11,6 +11,12 @@ type HeaderProps = {
   isAuth: boolean
 }
 export const Header: FC<HeaderProps> = ({ isAuth }) => {
+  const dropDownMenu = [
+    { id: 1, component: <ProfileBlock /> },
+    { id: 2, component: <Button variant={'primary'}> 2 </Button> },
+    { id: 3, component: <Button variant={'primary'}> 3 </Button> },
+  ]
+
   return (
     <div className={s.headerBlock}>
       <Logo />
@@ -20,7 +26,7 @@ export const Header: FC<HeaderProps> = ({ isAuth }) => {
           <Typography variant={'subtitle1'} className={s.menu_name}>
             Name
           </Typography>
-          <DropDownMenuDemo />
+          <DropDownMenuDemo items={dropDownMenu} />
         </div>
       )}
     </div>
