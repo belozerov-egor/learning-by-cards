@@ -1,6 +1,6 @@
 .fieldContainer {
   position: relative;
-  width: 250px;
+  width: 100%;
 
   .search {
     position: absolute;
@@ -16,10 +16,10 @@
     width: 100%;
     padding: 6px 12px;
 
-    font-family: inherit;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
+    font-size: var(--font-size-m);
+    font-weight: var(--font-weight-regular);
+    font-style: normal;
+    line-height: var(--line-height-m);
     color: var(--color-light-100);
 
     background: transparent;
@@ -29,6 +29,10 @@
 
     &::placeholder {
       color: var(--color-dark-100);
+    }
+
+    &:disabled::placeholder {
+      color: var(--color-dark-300);
     }
 
     &:disabled {
@@ -54,7 +58,7 @@
     }
   }
 
-  .showPassword {
+  .buttonAction {
     cursor: pointer;
 
     position: absolute;
@@ -63,8 +67,12 @@
     bottom: 50%;
     transform: translateY(-50%);
 
-    width: 20px;
-    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 24px;
+    height: 24px;
     padding: 0;
 
     background: transparent;
