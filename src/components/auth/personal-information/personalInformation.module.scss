@@ -1,0 +1,25 @@
+.block {
+  display: flex;
+  flex-direction: column;
+  width: 26.5rem;
+  padding: 2.06rem 2.25rem;
+
+  .title {
+    margin-bottom: 1.69rem;
+    text-align: center;
+  }
+
+  .avatarBlock {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .nickName {
+    margin-bottom: 2.25rem;
+  }
+
+  .submit {
+    padding: 0.375rem 0;
+  }
+}
