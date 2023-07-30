@@ -7,25 +7,28 @@ import { Typography } from '../typography'
 
 import s from './checkbox.module.scss'
 
-type CheckBoxProps = {
+export type CheckboxProps = {
   isDisabled?: boolean
-  isChecked?: boolean
+  checked?: boolean
   variant: 'default' | 'withText'
   checkBoxText?: string
+  onChange?: (checked: boolean) => void
 }
 
-export const CheckboxDemo: FC<CheckBoxProps> = ({
+export const CheckBox: FC<CheckboxProps> = ({
   isDisabled = false,
-  isChecked,
+  checked,
   checkBoxText,
+  onChange,
 }) => {
-  const [check, setCheck] = useState<boolean | undefined>(isChecked)
+  const [check, setCheck] = useState<boolean | undefined>(checked)
 
   return (
     <div className={s.checkBoxBlock}>
       <Checkbox.Root
         onClick={() => setCheck(!check)}
         className={`${s.checkboxRoot} ${check ? s.active : s.unActive}`}
+        onCheckedChange={onChange}
         defaultChecked
         id="c1"
         checked={check}
