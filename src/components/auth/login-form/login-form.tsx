@@ -30,7 +30,7 @@ export const LoginForm = () => {
         control={control}
         name={'password'}
         label={'password'}
-        type={'default'}
+        type={'password'}
       />
       <ControlledCheckbox
         control={control}

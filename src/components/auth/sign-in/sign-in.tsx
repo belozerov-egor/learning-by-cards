@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { Button, Card, ControlledCheckbox, TextField, Typography } from '../../ui'
+import { Button, Card, ControlledCheckbox, ControlledTextField, Typography } from '../../ui'
 
 import s from './sign-in.module.scss'
 
@@ -14,12 +14,7 @@ const sigInSchema = z.object({
 
 type SignInFormShem = z.infer<typeof sigInSchema>
 export const SignIn = () => {
-  const {
-    control,
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SignInFormShem>({
+  const { control, handleSubmit } = useForm<SignInFormShem>({
     resolver: zodResolver(sigInSchema),
   })
   const onSubmit = (data: SignInFormShem) => {
@@ -30,23 +25,18 @@ export const SignIn = () => {
     <Card className={s.signBlock}>
       <Typography variant={'large'}>Sign In</Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <TextField
-          {...register('email')}
-          errorMessage={errors.email?.message}
-          label={'email'}
-          type={'default'}
-        />
-        <TextField
-          {...register('password')}
-          errorMessage={errors.password?.message}
+        <ControlledTextField control={control} name={'email'} label={'email'} type={'default'} />
+        <ControlledTextField
+          control={control}
+          name={'password'}
           label={'password'}
-          type={'default'}
+          type={'password'}
         />
         <ControlledCheckbox
           control={control}
-          name={'rememberMe'}
           variant={'withText'}
-          checkBoxText={'remember me'}
+          checkBoxText={'Remember me'}
+          name={'rememberMe'}
         />
         <div className={s.forgotWrapper}>
           <Button as={'a'} variant={'link'}>
