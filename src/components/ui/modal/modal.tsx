@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from '@radix-ui/react-dialog'
 
-import { Close } from '../../../common/assets/img'
+import { Close } from '../../../common'
 import { Typography } from '../typography'
 
 import s from './modal.module.scss'
