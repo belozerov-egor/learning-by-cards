@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { Avatar, Logo } from '../../../common/assets/img'
+import { Logo } from '../../../common/assets/img'
 import { Button } from '../button'
 import { DropDownMenuDemo, ProfileBlock } from '../dropDownMenu'
 import { Typography } from '../typography'

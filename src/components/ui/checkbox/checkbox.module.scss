@@ -1,12 +1,14 @@
-button {
-  all: unset;
-}
-
 .checkBoxBlock {
   display: flex;
   align-items: center;
 
+  button {
+    all: unset;
+  }
+
   .checkboxRoot {
+    cursor: pointer;
+
     position: relative;
 
     display: flex;
@@ -17,7 +19,7 @@ button {
     height: 1.5rem;
 
     border: 2px solid var(--color-light-900);
-    border-radius: 4px;
+    border-radius: 0.25rem;
 
     &:focus {
       &::before {
@@ -46,8 +48,8 @@ button {
           position: absolute;
           z-index: -1;
 
-          width: calc(100% + 25px);
-          height: calc(100% + 25px);
+          width: calc(100% + 1.5625rem);
+          height: calc(100% + 1.5625rem);
 
           background-color: var(--color-dark-500);
           border-radius: 50%;
@@ -65,7 +67,7 @@ button {
       justify-content: center;
       color: var(--color-dark-900);
 
-      svg {
+      .icon {
         width: 1.55rem;
         height: 1.55rem;
       }
@@ -81,6 +83,8 @@ button {
   }
 
   .label {
+    cursor: pointer;
+    user-select: none;
     margin-left: 0.75rem;
   }
 

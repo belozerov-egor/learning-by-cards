@@ -1,8 +1,15 @@
 .listBox {
+  position: relative;
+
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+
   width: 13.125rem;
+
+  button {
+    all: unset;
+  }
 
   .trigger {
     cursor: pointer;
@@ -55,8 +62,11 @@
   }
 
   .optionList {
+    position: absolute;
+
     overflow: hidden;
 
+    width: 100%;
     margin: 0;
     padding: 0;
 

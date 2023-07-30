@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { TextField } from './textfield.tsx'
+import { TextField } from './textField.tsx'
 
 const meta = {
-  title: 'Components/TextField',
+  title: 'Components/Textfield',
   component: TextField,
   tags: ['autodocs'],
   argTypes: { onChange: { action: 'text changes' } },
