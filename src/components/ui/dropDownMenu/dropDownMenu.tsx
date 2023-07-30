@@ -9,17 +9,17 @@ import s from './dropDownMenu.module.scss'
 
 type DropDownMenuPropsType = {
   trigger?: ReactNode
-  items: {
+  items?: {
     id: number
     component: JSX.Element
   }[]
 }
 
 export const DropDownMenuDemo: FC<DropDownMenuPropsType> = ({ items }) => {
-  const itemsForRender = items.map((item, index) => {
+  const itemsForRender = items?.map((item, index) => {
     return (
       <>
-        {index === items.length - 1 ? (
+        {index === items?.length - 1 ? (
           <DropdownMenu.Item className={s.dropdownMenuItem}>{item.component}</DropdownMenu.Item>
         ) : (
           <>
