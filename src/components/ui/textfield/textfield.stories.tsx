@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { TextField } from './textField.tsx'
 
 const meta = {
-  title: 'Components/Textfield',
+  title: 'Components/TextField',
   component: TextField,
   tags: ['autodocs'],
   argTypes: { onChange: { action: 'text changes' } },
@@ -14,7 +14,7 @@ type Story = StoryObj<typeof meta>
 
 export const TextFieldDefault: Story = {
   args: {
-    label: 'label',
+    label: 'Default',
     placeholder: 'Default',
     value: '',
     type: 'default',
@@ -32,6 +32,7 @@ export const TextFieldDefaultError: Story = {
 }
 export const TextFieldPassword: Story = {
   args: {
+    label: 'Password',
     placeholder: 'Password',
     type: 'password',
     value: 'Password',
@@ -49,6 +50,7 @@ export const TextFieldPasswordError: Story = {
 }
 export const TextFieldSearch: Story = {
   args: {
+    label: 'Search',
     placeholder: 'Search',
     type: 'searchType',
     value: '',

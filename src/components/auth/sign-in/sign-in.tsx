@@ -23,32 +23,42 @@ export const SignIn = () => {
 
   return (
     <Card className={s.signBlock}>
-      <Typography variant={'large'}>Sign In</Typography>
+      <Typography className={s.title} variant={'large'}>
+        Sign In
+      </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <ControlledTextField control={control} name={'email'} label={'email'} type={'default'} />
         <ControlledTextField
+          name={'email'}
+          label={'Email'}
+          type={'default'}
           control={control}
+          className={s.email}
+        />
+        <ControlledTextField
           name={'password'}
-          label={'password'}
+          label={'Password'}
           type={'password'}
+          control={control}
+          className={s.password}
         />
         <ControlledCheckbox
           control={control}
+          name={'rememberMe'}
           variant={'withText'}
           checkBoxText={'Remember me'}
-          name={'rememberMe'}
         />
         <div className={s.forgotWrapper}>
           <Button as={'a'} variant={'link'}>
             <Typography variant={'body2'}>Forgot Password?</Typography>
           </Button>
         </div>
-
         <Button fullWidth={true} className={s.submit} type="submit">
           Sign In
         </Button>
       </form>
-      <Typography variant={'body2'}>Already have an account?</Typography>
+      <Typography variant={'body2'} className={s.question}>
+        Don&apos;t have an account?
+      </Typography>
       <Button as={'a'} variant={'link'} className={s.signUp}>
         Sign Up
       </Button>
