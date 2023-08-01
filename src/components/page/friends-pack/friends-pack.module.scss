@@ -26,11 +26,15 @@
   .titleMenu {
     display: flex;
     gap: 1rem;
-    align-items: center;
+    align-items: end;
     text-align: center;
   }
 
   .textField {
     margin-bottom: 1.5rem;
   }
+}
+
+.buttonDrop {
+  padding: 0;
 }
