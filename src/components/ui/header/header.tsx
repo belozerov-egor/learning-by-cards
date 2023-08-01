@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { Logo, Logout, Profile } from '../../../common'
+import { Avatar, Logo, Logout, Profile } from '../../../common'
 import { Button } from '../button'
 import { DropDownMenuDemo } from '../dropDownMenu'
 import { Typography } from '../typography'
@@ -43,7 +43,7 @@ export const Header: FC<HeaderProps> = ({ isAuth }) => {
           <Typography variant={'subtitle1'} className={s.menu_name}>
             Name
           </Typography>
-          <DropDownMenuDemo items={dropDownMenu} />
+          <DropDownMenuDemo items={dropDownMenu} trigger={<Avatar />} />
         </div>
       )}
     </div>
