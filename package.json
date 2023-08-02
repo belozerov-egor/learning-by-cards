@@ -30,6 +30,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.2",
+    "react-router-dom": "^6.14.2",
     "zod": "^3.21.4"
   },
   "devDependencies": {
@@ -58,6 +59,9 @@
     "react-icons": "^4.10.1",
     "sass": "^1.63.6",
     "storybook": "7.0.27",
+    "storybook-addon-react-router": "^1.0.1",
+    "storybook-addon-react-router-v6": "^2.0.0",
+    "storybook-react-router": "^1.0.8",
     "stylelint": "^15.10.1",
     "typescript": "^5.0.2",
     "vite": "^4.4.0"
