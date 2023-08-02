@@ -2,6 +2,10 @@ import { FC, ReactNode } from 'react'
 
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 
+import { Avatar, Logout, Profile } from '../../../common'
+import { Button } from '../button'
+import { Typography } from '../typography'
+
 import s from './dropDownMenu.module.scss'
 
 type DropDownMenuPropsType = {
@@ -11,8 +15,31 @@ type DropDownMenuPropsType = {
     component: JSX.Element
   }[]
 }
+const dropDownMenu = [
+  {
+    id: 1,
+    component: (
+      <Button variant={'link'} className={s.buttonDrop}>
+        <Profile />
+        <Typography variant={'caption'}>My Profile</Typography>
+      </Button>
+    ),
+  },
+  {
+    id: 2,
+    component: (
+      <Button variant={'link'} className={s.buttonDrop}>
+        <Logout />
+        <Typography variant={'caption'}>Sign Out</Typography>
+      </Button>
+    ),
+  },
+]
 
-export const DropDownMenuDemo: FC<DropDownMenuPropsType> = ({ items, trigger }) => {
+export const DropDownMenuDemo: FC<DropDownMenuPropsType> = ({
+  items = dropDownMenu,
+  trigger = <Avatar />,
+}) => {
   const itemsForRender = items?.map((item, index) => {
     return (
       <>
