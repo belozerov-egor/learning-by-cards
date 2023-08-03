@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { MemoryRouter } from 'react-router-dom'
+
+import { BrowserRouterDecorator } from '../../../common/utils/decorators.tsx'
 
 import { CreateNewPassword } from './create-new-password.tsx'
 
@@ -7,13 +8,7 @@ const meta = {
   title: 'Auth/CreateNewPassword',
   component: CreateNewPassword,
   tags: ['autodocs'],
-  decorators: [
-    Story => (
-      <MemoryRouter>
-        <Story />
-      </MemoryRouter>
-    ),
-  ],
+  decorators: [BrowserRouterDecorator],
 } satisfies Meta<typeof CreateNewPassword>
 
 export default meta
