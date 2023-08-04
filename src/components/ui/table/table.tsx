@@ -134,3 +134,13 @@ export const Table = () => {
     </Root>
   )
 }
+
+export const TableElement = {
+  Root,
+  Head,
+  Body,
+  Row,
+  HeadCell,
+  Cell,
+  Empty,
+}
