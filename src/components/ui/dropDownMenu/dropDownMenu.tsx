@@ -47,7 +47,9 @@ export const DropDownMenuDemo: FC<DropDownMenuPropsType> = ({
           <DropdownMenu.Item className={s.dropdownMenuItem}>{item.component}</DropdownMenu.Item>
         ) : (
           <>
-            <DropdownMenu.Item className={s.dropdownMenuItem}>{item.component}</DropdownMenu.Item>
+            <DropdownMenu.Item key={item.id} className={s.dropdownMenuItem}>
+              {item.component}
+            </DropdownMenu.Item>
             <DropdownMenu.Separator className={s.dropdownMenuSeparator} />
           </>
         )}
