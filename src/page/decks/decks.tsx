@@ -1,10 +1,11 @@
-import { useGetDecksQuery } from '../../../services/decks'
-import { TableElement } from '../../ui'
-
+import { TableElement } from '../../components'
+import { useCreateDeckMutation, useGetDecksQuery } from '../../services/decks'
 export const Decks = () => {
   const { isLoading, data } = useGetDecksQuery({
     itemsPerPage: 20,
   })
+
+  const [createDeck, { isLoading: isCreateDeckLoading }] = useCreateDeckMutation()
 
   if (isLoading) return <div>Loading...</div>
 
