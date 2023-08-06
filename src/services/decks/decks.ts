@@ -1,5 +1,7 @@
 import { baseApi } from '../base-api.ts'
 
+import { DecksResponse } from './types.ts'
+
 const decksApi = baseApi.injectEndpoints({
   endpoints: builder => {
     return {
@@ -36,5 +38,3 @@ type GetDecksArgs = {
 }
 
 export const { useGetDecksQuery, useCreateDeckMutation } = decksApi
-
-
