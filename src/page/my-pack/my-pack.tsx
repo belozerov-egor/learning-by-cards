@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { ArrowDown, ArrowUp, Back, Edit, Play, SubMenu, Trash } from '../../../common'
+import { ArrowDown, ArrowUp, Back, Edit, Play, SubMenu, Trash } from '../../common'
 import {
   Button,
   CheckBox,
@@ -10,7 +10,7 @@ import {
   TextField,
   Typography,
   Grade,
-} from '../../ui'
+} from '../../components'
 
 import s from './my-pack.module.scss'
 

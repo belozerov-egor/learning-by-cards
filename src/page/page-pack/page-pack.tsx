@@ -1,5 +1,5 @@
-import { Back } from '../../../common'
-import { Button, Typography } from '../../ui'
+import { Back } from '../../common'
+import { Button, Typography } from '../../components'
 
 import s from './page-pack.module.scss'
 

@@ -1,5 +1,5 @@
-import { Back, Edit, Play, SubMenu, Trash } from '../../../common'
-import { Button, DropDownMenuDemo, Table, TextField, Typography } from '../../ui'
+import { Back, Edit, Play, SubMenu, Trash } from '../../common'
+import { Button, DropDownMenuDemo, Table, TextField, Typography } from '../../components'
 
 import s from './friends-pack.module.scss'
 
