@@ -13,7 +13,7 @@ export const Login = () => {
   useEffect(() => {
     if (!data) return
 
-    navigate('/my-pack')
+    navigate('/pack-list')
   }, [data])
 
   return (
