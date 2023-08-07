@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import { Link } from 'react-router-dom'
+
 import { ArrowDown, ArrowUp, Edit, Play, Trash } from '../../common'
 import useDebounce from '../../common/hooks/use-debounce.ts'
 import {
@@ -12,7 +14,13 @@ import {
   TextField,
   Typography,
 } from '../../components'
-import { useCreateDeckMutation, useGetDecksQuery } from '../../services/decks'
+import { useMeQuery } from '../../services/auth'
+import { cardsSlice } from '../../services/cards'
+import {
+  useCreateDeckMutation,
+  useDeletedDeckMutation,
+  useGetDecksQuery,
+} from '../../services/decks'
 import { deckSlice } from '../../services/decks/deck.slice.ts'
 import { useAppDispatch, useAppSelector } from '../../services/store.ts'
 
@@ -38,9 +46,14 @@ export const PacksList = () => {
 
   const { data } = useGetDecksQuery({
     name: newInitialName,
-    orderBy: 'created-desc',
+    orderBy: sortTable ? 'created-desc' : 'created-asc',
+    itemsPerPage: 20,
   })
+
+  const { data: meData } = useMeQuery()
+
   const [createDeck] = useCreateDeckMutation()
+  const [deleteDeck] = useDeletedDeckMutation()
   const setSearchByName = (event: string) => {
     dispatch(deckSlice.actions.setSearchByName(event))
   }
@@ -48,11 +61,18 @@ export const PacksList = () => {
     createDeck({ name: packName })
     setOpen(false)
   }
+
+  const handleDeleteCard = (id: string) => deleteDeck({ id })
+
   const handleOpen = () => {
     setOpen(true)
   }
   const handleClose = () => {
     setOpen(false)
+  }
+
+  const setCurrentIdToStore = (id: string) => {
+    dispatch(cardsSlice.actions.setCurrentPackId({ id }))
   }
 
   return (
@@ -78,7 +98,7 @@ export const PacksList = () => {
           <TabSwitcher
             onChangeCallback={() => {}}
             options={tabSwitcherOptions}
-            classname={s.switcher}
+            className={s.switcher}
           />
         </div>
         <div>
@@ -112,17 +132,30 @@ export const PacksList = () => {
           {data?.items.map(el => {
             return (
               <TableElement.Row key={el.id}>
-                <TableElement.Cell>{el.name}</TableElement.Cell>
+                <TableElement.Cell>
+                  <Button
+                    as={Link}
+                    to="/my-pack"
+                    variant={'link'}
+                    onClick={() => setCurrentIdToStore(el.id)}
+                  >
+                    {el.name}
+                  </Button>
+                </TableElement.Cell>
                 <TableElement.Cell>{el.cardsCount}</TableElement.Cell>
                 <TableElement.Cell>
-                  {new Date(el.updated).toLocaleDateString('ru-RU')}
+                  {new Date(el.created).toLocaleDateString('ru-RU')}
                 </TableElement.Cell>
                 <TableElement.Cell>{el.author.name}</TableElement.Cell>
                 <TableElement.Cell>
                   <div className={s.icons}>
                     <Play />
-                    <Edit />
-                    <Trash />
+                    {el.author.id === meData?.id && (
+                      <>
+                        <Edit />
+                        <Trash onClick={() => handleDeleteCard(el.id)} />
+                      </>
+                    )}
                   </div>
                 </TableElement.Cell>
               </TableElement.Row>
@@ -136,6 +169,7 @@ export const PacksList = () => {
         open={open}
         onClose={handleClose}
         titleButton={'Add New Pack'}
+        disableButton={!packName}
         callBack={handleCreateClicked}
       >
         <TextField
