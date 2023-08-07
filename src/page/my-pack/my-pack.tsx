@@ -16,6 +16,7 @@ import {
 import { useGetCardsQuery } from '../../services/cards'
 import { useGetDeckQuery } from '../../services/decks'
 import { useAppSelector } from '../../services/store.ts'
+import { PagePack } from '../page-pack'
 
 import s from './my-pack.module.scss'
 
@@ -86,94 +87,100 @@ export const MyPack = () => {
   }
 
   return (
-    <div className={s.myPackBlock}>
-      <Button as={Link} to="/" variant={'link'} className={s.backButton}>
-        <Back />
-        Back to Packs List
-      </Button>
-      <div className={s.headBlock}>
-        <div className={s.titleMenu}>
-          <Typography variant={'large'}>{data?.name}</Typography>
-          <DropDownMenuDemo items={dropDownMenu} trigger={<SubMenu />} />
-        </div>
-        <Button variant={'primary'}>Add New Card</Button>
-      </div>
-      <TextField
-        value={question}
-        onChangeText={event => setSearchByName(event)}
-        type={'searchType'}
-        className={s.textField}
-      />
-      <TableElement.Root>
-        <TableElement.Head>
-          <TableElement.Row>
-            <TableElement.HeadCell>Question</TableElement.HeadCell>
-            <TableElement.HeadCell>Answer</TableElement.HeadCell>
-            <TableElement.HeadCell
-              onClick={() => {
-                changeSort(!sortTable)
-              }}
-            >
-              Last Updated {sortTable ? <ArrowDown /> : <ArrowUp />}
-            </TableElement.HeadCell>
-            <TableElement.HeadCell>Grade</TableElement.HeadCell>
-            <TableElement.HeadCell></TableElement.HeadCell>
-          </TableElement.Row>
-        </TableElement.Head>
-        <TableElement.Body>
-          {dataCards?.items.map(el => {
-            return (
-              <TableElement.Row key={el.id}>
-                <TableElement.Cell>{el.question}</TableElement.Cell>
-                <TableElement.Cell>{el.answer}</TableElement.Cell>
-                <TableElement.Cell>
-                  {new Date(el.updated).toLocaleDateString('ru-RU')}
-                </TableElement.Cell>
-                <TableElement.Cell>
-                  <Grade rating={el.rating} />
-                </TableElement.Cell>
-                <TableElement.Cell>
-                  <div className={s.icons}>
-                    <Edit />
-                    <Trash />
-                  </div>
-                </TableElement.Cell>
+    <>
+      {dataCards?.items.length !== 0 ? (
+        <div className={s.myPackBlock}>
+          <Button as={Link} to="/" variant={'link'} className={s.backButton}>
+            <Back />
+            Back to Packs List
+          </Button>
+          <div className={s.headBlock}>
+            <div className={s.titleMenu}>
+              <Typography variant={'large'}>{data?.name}</Typography>
+              <DropDownMenuDemo items={dropDownMenu} trigger={<SubMenu />} />
+            </div>
+            <Button variant={'primary'}>Add New Card</Button>
+          </div>
+          <TextField
+            value={question}
+            onChangeText={event => setSearchByName(event)}
+            type={'searchType'}
+            className={s.textField}
+          />
+          <TableElement.Root>
+            <TableElement.Head>
+              <TableElement.Row>
+                <TableElement.HeadCell>Question</TableElement.HeadCell>
+                <TableElement.HeadCell>Answer</TableElement.HeadCell>
+                <TableElement.HeadCell
+                  onClick={() => {
+                    changeSort(!sortTable)
+                  }}
+                >
+                  Last Updated {sortTable ? <ArrowDown /> : <ArrowUp />}
+                </TableElement.HeadCell>
+                <TableElement.HeadCell>Grade</TableElement.HeadCell>
+                <TableElement.HeadCell></TableElement.HeadCell>
               </TableElement.Row>
-            )
-          })}
-        </TableElement.Body>
-      </TableElement.Root>
-      <Modal
-        title={'Edite Pack'}
-        showCloseButton={true}
-        open={openEdit}
-        onClose={handleCloseEdit}
-        titleButton={'Save Changes'}
-      >
-        <TextField type={'default'} label={'Name Pack'} placeholder={'name'} />
-        <CheckBox
-          variant={'withText'}
-          checkBoxText={'Private pack'}
-          checked={privatePack}
-          onChange={() => setPrivatePack(!privatePack)}
-        />
-      </Modal>
-      <Modal
-        title={'Delete Pack'}
-        showCloseButton={true}
-        open={openDelete}
-        onClose={handleCloseDelete}
-        titleButton={'Save Changes'}
-      >
-        <Typography variant={'body1'}>
-          Do you really want to remove{' '}
-          <Typography variant={'subtitle1'} className={s.packName}>
-            Pack Name?
-          </Typography>{' '}
-          <br />
-          All cards will be deleted.
-        </Typography>
-      </Modal>
-    </div>
+            </TableElement.Head>
+            <TableElement.Body>
+              {dataCards?.items.map(el => {
+                return (
+                  <TableElement.Row key={el.id}>
+                    <TableElement.Cell>{el.question}</TableElement.Cell>
+                    <TableElement.Cell>{el.answer}</TableElement.Cell>
+                    <TableElement.Cell>
+                      {new Date(el.updated).toLocaleDateString('ru-RU')}
+                    </TableElement.Cell>
+                    <TableElement.Cell>
+                      <Grade rating={el.rating} />
+                    </TableElement.Cell>
+                    <TableElement.Cell>
+                      <div className={s.icons}>
+                        <Edit />
+                        <Trash />
+                      </div>
+                    </TableElement.Cell>
+                  </TableElement.Row>
+                )
+              })}
+            </TableElement.Body>
+          </TableElement.Root>
+          <Modal
+            title={'Edite Pack'}
+            showCloseButton={true}
+            open={openEdit}
+            onClose={handleCloseEdit}
+            titleButton={'Save Changes'}
+          >
+            <TextField type={'default'} label={'Name Pack'} placeholder={'name'} />
+            <CheckBox
+              variant={'withText'}
+              checkBoxText={'Private pack'}
+              checked={privatePack}
+              onChange={() => setPrivatePack(!privatePack)}
+            />
+          </Modal>
+          <Modal
+            title={'Delete Pack'}
+            showCloseButton={true}
+            open={openDelete}
+            onClose={handleCloseDelete}
+            titleButton={'Save Changes'}
+          >
+            <Typography variant={'body1'}>
+              Do you really want to remove{' '}
+              <Typography variant={'subtitle1'} className={s.packName}>
+                Pack Name?
+              </Typography>{' '}
+              <br />
+              All cards will be deleted.
+            </Typography>
+          </Modal>
+        </div>
+      ) : (
+        <PagePack name={data?.name} />
+      )}
+    </>
   )
 }

@@ -30,6 +30,14 @@ const decksApi = baseApi.injectEndpoints({
         }),
         invalidatesTags: ['Decks'],
       }),
+      createCard: builder.mutation<any, any>({
+        query: ({ id, ...args }) => ({
+          url: `v1/decks/${id}/cards`,
+          method: 'POST',
+          body: { ...args },
+        }),
+        invalidatesTags: ['Decks'],
+      }),
       deletedDeck: builder.mutation<any, any>({
         query: ({ id }) => ({
           url: `v1/decks/${id}`,
