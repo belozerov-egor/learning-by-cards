@@ -9,6 +9,7 @@ import {
 import { Layout } from './components'
 import { PacksList } from './page'
 import { MyPack } from './page/my-pack'
+import { useMeQuery } from './services/auth'
 import { Login } from './services/auth/components'
 
 const publicRoutes: RouteObject[] = [
@@ -43,15 +44,11 @@ const router = createBrowserRouter([
 ])
 
 function PrivateRoutes() {
-  const isAuthenticated = false
+  const { data, isLoading } = useMeQuery()
 
-  return isAuthenticated ? (
-    <>
-      <Outlet />
-    </>
-  ) : (
-    <Navigate to="/login" />
-  )
+  if (isLoading) return <div>...Loading</div>
+
+  return data ? <Outlet /> : <Navigate to={'/login'} />
 }
 
 export const Router = () => {

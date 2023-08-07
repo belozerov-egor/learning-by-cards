@@ -8,8 +8,7 @@ export const Routing = () => {
   return (
     <Routes>
       <Route path={'/'} element={<SignIn />} />
-      {/*<Route path={'/'} element={<Typography variant={'body2'}>Hello</Typography>} />*/}
-      <Route path={'/sign-in'} element={<SignIn />} />
+      <Route path={'/login'} element={<SignIn />} />
       <Route path={'/sign-up'} element={<SignUp />} />
       <Route path={'/create-new-password'} element={<CreateNewPassword />} />
       <Route path={'/forgot-password'} element={<ForgotPassword />} />
