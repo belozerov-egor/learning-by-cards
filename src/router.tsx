@@ -6,13 +6,15 @@ import {
   RouterProvider,
 } from 'react-router-dom'
 
-import { SignIn } from './components'
+import { Layout } from './components'
 import { PacksList } from './page'
+import { MyPack } from './page/my-pack'
+import { Login } from './services/auth/components'
 
 const publicRoutes: RouteObject[] = [
   {
     path: '/login',
-    element: <SignIn />,
+    element: <Login />,
   },
 ]
 
@@ -21,18 +23,27 @@ const privateRoutes: RouteObject[] = [
     path: '/',
     element: <PacksList />,
   },
+  {
+    path: '/my-pack',
+    element: <MyPack />,
+  },
 ]
 
 const router = createBrowserRouter([
   {
-    element: <PrivateRoutes />,
-    children: privateRoutes,
+    element: <Layout />,
+    children: [
+      {
+        element: <PrivateRoutes />,
+        children: privateRoutes,
+      },
+      ...publicRoutes,
+    ],
   },
-  ...publicRoutes,
 ])
 
 function PrivateRoutes() {
-  const isAuthenticated = true
+  const isAuthenticated = false
 
   return isAuthenticated ? (
     <>
