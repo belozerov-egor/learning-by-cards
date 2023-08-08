@@ -20,6 +20,7 @@ import {
   useCreateDeckMutation,
   useDeletedDeckMutation,
   useGetDecksQuery,
+  useUpdateDeckMutation,
 } from '../../services/decks'
 import { deckSlice } from '../../services/decks/deck.slice.ts'
 import { useAppDispatch, useAppSelector } from '../../services/store.ts'
@@ -38,7 +39,13 @@ export const PacksList = () => {
   const dispatch = useAppDispatch()
 
   const [sortTable, setSortTable] = useState(false)
-  const [open, setOpen] = useState(false)
+  // const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState({
+    addNewPack: false,
+    editPack: false,
+  })
+  const [cardId, setCardId] = useState('')
+
   const [privatePack, setPrivatePack] = useState(false)
   const [userId, setUserId] = useState('')
   const changeSort = (status: boolean) => setSortTable(status)
@@ -56,12 +63,15 @@ export const PacksList = () => {
 
   const [createDeck] = useCreateDeckMutation()
   const [deleteDeck] = useDeletedDeckMutation()
+  const [editDeck] = useUpdateDeckMutation()
   const setSearchByName = (event: string) => {
     dispatch(deckSlice.actions.setSearchByName(event))
   }
   const handleCreateClicked = () => {
-    createDeck({ name: packName })
-    setOpen(false)
+    {
+      open.addNewPack ? createDeck({ name: packName }) : editDeck({ id: cardId, name: packName })
+    }
+    setOpen({ ...open, addNewPack: false })
   }
 
   const handleDeleteCard = (id: string) => deleteDeck({ id })
@@ -74,11 +84,17 @@ export const PacksList = () => {
     }
   }
 
-  const handleOpen = () => {
-    setOpen(true)
+  const handleOpen = (value: string) => {
+    setOpen(prevOpen => ({
+      ...prevOpen,
+      [value]: true,
+    }))
   }
-  const handleClose = () => {
-    setOpen(false)
+  const handleClose = (value: string) => {
+    setOpen(prevOpen => ({
+      ...prevOpen,
+      [value]: false,
+    }))
   }
 
   const setIsMyPackHandler = (value: boolean) => {
@@ -89,7 +105,7 @@ export const PacksList = () => {
     <div className={s.packListBlock}>
       <div className={s.headBlock}>
         <Typography variant={'large'}>Packs list</Typography>
-        <Button variant={'primary'} onClick={handleOpen}>
+        <Button variant={'primary'} onClick={() => handleOpen('addNewPack')}>
           Add New Pack
         </Button>
       </div>
@@ -162,7 +178,13 @@ export const PacksList = () => {
                     <Play />
                     {el.author.id === meData?.id && (
                       <>
-                        <Edit />
+                        <Edit
+                          onClick={() => {
+                            handleOpen('editPack')
+                            setPackName(el.name)
+                            setCardId(el.id)
+                          }}
+                        />
                         <Trash onClick={() => handleDeleteCard(el.id)} />
                       </>
                     )}
@@ -174,11 +196,11 @@ export const PacksList = () => {
         </TableElement.Body>
       </TableElement.Root>
       <Modal
-        title={'Add New Pack'}
+        title={open.addNewPack ? 'Add New Pack' : 'Edit Pack'}
         showCloseButton={true}
-        open={open}
-        onClose={handleClose}
-        titleButton={'Add New Pack'}
+        open={open.addNewPack ? open.addNewPack : open.editPack}
+        onClose={open.addNewPack ? () => handleClose('addNewPack') : () => handleClose('editPack')}
+        titleButton={open.addNewPack ? 'Add New Pack' : 'Save Changes'}
         disableButton={!packName}
         callBack={handleCreateClicked}
       >

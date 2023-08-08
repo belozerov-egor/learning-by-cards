@@ -30,6 +30,14 @@ const decksApi = baseApi.injectEndpoints({
         }),
         invalidatesTags: ['Decks'],
       }),
+      updateDeck: builder.mutation<any, { id: string; name: string }>({
+        query: ({ id, name }) => ({
+          url: `v1/decks/${id}`,
+          method: 'PATCH',
+          body: { name },
+        }),
+        invalidatesTags: ['Decks'],
+      }),
       createCard: builder.mutation<any, any>({
         query: ({ id, ...args }) => ({
           url: `v1/decks/${id}/cards`,
@@ -38,6 +46,7 @@ const decksApi = baseApi.injectEndpoints({
         }),
         invalidatesTags: ['Decks'],
       }),
+
       deletedDeck: builder.mutation<any, any>({
         query: ({ id }) => ({
           url: `v1/decks/${id}`,
@@ -59,5 +68,10 @@ type GetDecksArgs = {
   itemsPerPage?: number
 }
 
-export const { useGetDecksQuery, useGetDeckQuery, useCreateDeckMutation, useDeletedDeckMutation } =
-  decksApi
+export const {
+  useGetDecksQuery,
+  useGetDeckQuery,
+  useCreateDeckMutation,
+  useDeletedDeckMutation,
+  useUpdateDeckMutation,
+} = decksApi
