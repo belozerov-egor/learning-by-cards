@@ -9,7 +9,7 @@ import s from './tabSwitcher.module.scss'
 type PropsType = {
   className?: string
   options?: any[]
-  onChangeCallback?: (value: any) => void
+  onChangeCallback?: (value: string) => void
 }
 export const TabSwitcher: FC<PropsType> = ({ options, onChangeCallback, className }) => {
   return (

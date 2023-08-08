@@ -40,6 +40,7 @@ export const PacksList = () => {
   const [sortTable, setSortTable] = useState(false)
   const [open, setOpen] = useState(false)
   const [privatePack, setPrivatePack] = useState(false)
+  const [userId, setUserId] = useState('')
   const changeSort = (status: boolean) => setSortTable(status)
 
   const newInitialName = useDebounce(initialName, 1000)
@@ -48,6 +49,7 @@ export const PacksList = () => {
     name: newInitialName,
     orderBy: sortTable ? 'created-desc' : 'created-asc',
     itemsPerPage: 20,
+    authorId: userId,
   })
 
   const { data: meData } = useMeQuery()
@@ -64,6 +66,14 @@ export const PacksList = () => {
 
   const handleDeleteCard = (id: string) => deleteDeck({ id })
 
+  const handleTabSort = (value: string) => {
+    if (value === 'My Cards') {
+      setUserId(meData!.id)
+    } else {
+      setUserId('')
+    }
+  }
+
   const handleOpen = () => {
     setOpen(true)
   }
@@ -71,8 +81,8 @@ export const PacksList = () => {
     setOpen(false)
   }
 
-  const setCurrentIdToStore = (id: string) => {
-    dispatch(cardsSlice.actions.setCurrentPackId({ id }))
+  const setIsMyPackHandler = (value: boolean) => {
+    dispatch(cardsSlice.actions.setIsMyPack({ isMyPack: value }))
   }
 
   return (
@@ -96,14 +106,14 @@ export const PacksList = () => {
             Show packs cards
           </Typography>
           <TabSwitcher
-            onChangeCallback={() => {}}
+            onChangeCallback={value => handleTabSort(value)}
             options={tabSwitcherOptions}
             className={s.switcher}
           />
         </div>
         <div>
           <Typography variant={'body2'} className={s.titleSettings}>
-            Show packs cards
+            Number of cards
           </Typography>
           <SliderDemo minValue={0} maxValue={10} />
         </div>
@@ -135,9 +145,9 @@ export const PacksList = () => {
                 <TableElement.Cell>
                   <Button
                     as={Link}
-                    to="/my-pack"
+                    to={`/my-pack/${el.id}`}
                     variant={'link'}
-                    onClick={() => setCurrentIdToStore(el.id)}
+                    onClick={() => setIsMyPackHandler(el.author.id === meData?.id)}
                   >
                     {el.name}
                   </Button>
