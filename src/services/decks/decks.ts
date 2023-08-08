@@ -38,7 +38,7 @@ const decksApi = baseApi.injectEndpoints({
         }),
         invalidatesTags: ['Decks'],
       }),
-      createCard: builder.mutation<any, any>({
+      createCard: builder.mutation<any, { id: string; question: string; answer: string }>({
         query: ({ id, ...args }) => ({
           url: `v1/decks/${id}/cards`,
           method: 'POST',
@@ -74,4 +74,5 @@ export const {
   useCreateDeckMutation,
   useDeletedDeckMutation,
   useUpdateDeckMutation,
+  useCreateCardMutation,
 } = decksApi

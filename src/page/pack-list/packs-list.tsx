@@ -6,8 +6,6 @@ import { ArrowDown, ArrowUp, Edit, Play, Trash } from '../../common'
 import useDebounce from '../../common/hooks/use-debounce.ts'
 import {
   Button,
-  CheckBox,
-  Modal,
   SliderDemo,
   TableElement,
   TabSwitcher,
@@ -25,7 +23,9 @@ import {
 import { deckSlice } from '../../services/decks/deck.slice.ts'
 import { useAppDispatch, useAppSelector } from '../../services/store.ts'
 
+import { PackModal } from './pack-modal'
 import s from './packs-list.module.scss'
+import { ModalType } from './types.ts'
 
 export const PacksList = () => {
   const tabSwitcherOptions = [
@@ -33,21 +33,19 @@ export const PacksList = () => {
     { id: 2, value: 'All Cards' },
   ]
 
-  const [packName, setPackName] = useState('')
+  const [packName, setPackName] = useState<string>('')
 
   const initialName = useAppSelector(state => state.deckSlice.searchByName)
   const dispatch = useAppDispatch()
 
-  const [sortTable, setSortTable] = useState(false)
-  // const [open, setOpen] = useState(false)
-  const [open, setOpen] = useState({
+  const [sortTable, setSortTable] = useState<boolean>(false)
+  const [open, setOpen] = useState<ModalType>({
     addNewPack: false,
     editPack: false,
   })
-  const [cardId, setCardId] = useState('')
-
-  const [privatePack, setPrivatePack] = useState(false)
-  const [userId, setUserId] = useState('')
+  const [cardId, setCardId] = useState<string>('')
+  const [privatePack, setPrivatePack] = useState<boolean>(false)
+  const [userId, setUserId] = useState<string>('')
   const changeSort = (status: boolean) => setSortTable(status)
 
   const newInitialName = useDebounce(initialName, 1000)
@@ -195,29 +193,15 @@ export const PacksList = () => {
           })}
         </TableElement.Body>
       </TableElement.Root>
-      <Modal
-        title={open.addNewPack ? 'Add New Pack' : 'Edit Pack'}
-        showCloseButton={true}
-        open={open.addNewPack ? open.addNewPack : open.editPack}
-        onClose={open.addNewPack ? () => handleClose('addNewPack') : () => handleClose('editPack')}
-        titleButton={open.addNewPack ? 'Add New Pack' : 'Save Changes'}
-        disableButton={!packName}
-        callBack={handleCreateClicked}
-      >
-        <TextField
-          type={'default'}
-          value={packName}
-          label={'Name Pack'}
-          placeholder={'name'}
-          onChangeText={e => setPackName(e)}
-        />
-        <CheckBox
-          variant={'withText'}
-          checkBoxText={'Private pack'}
-          checked={privatePack}
-          onChange={() => setPrivatePack(!privatePack)}
-        />
-      </Modal>
+      <PackModal
+        open={open}
+        packName={packName}
+        handleClose={handleClose}
+        handleCreateClicked={handleCreateClicked}
+        setPackName={setPackName}
+        privatePack={privatePack}
+        setPrivatePack={setPrivatePack}
+      />
     </div>
   )
 }
