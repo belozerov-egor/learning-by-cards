@@ -15,7 +15,7 @@ const decksApi = baseApi.injectEndpoints({
         },
         providesTags: ['Decks'],
       }),
-      getDeck: builder.query<Deck, { id: string }>({
+      getDeck: builder.query<Deck, { id: string | undefined }>({
         query: ({ id }) => ({
           url: `v1/decks/${id}`,
           method: 'GET',

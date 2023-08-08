@@ -28,10 +28,6 @@ const privateRoutes: RouteObject[] = [
     path: '/my-pack',
     element: <MyPack />,
   },
-  {
-    path: '/pack-list',
-    element: <PacksList />,
-  },
 ]
 
 const router = createBrowserRouter([
