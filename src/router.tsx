@@ -7,8 +7,7 @@ import {
 } from 'react-router-dom'
 
 import { Layout } from './components'
-import { PacksList } from './page'
-import { MyPack } from './page/my-pack'
+import { PacksList, MyPack } from './page'
 import { useMeQuery } from './services/auth'
 import { Login } from './services/auth/components'
 

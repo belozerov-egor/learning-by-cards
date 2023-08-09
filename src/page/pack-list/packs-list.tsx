@@ -68,13 +68,13 @@ export const PacksList = () => {
     dispatch(deckSlice.actions.setSearchByName(event))
   }
   const handleCreateClicked = () => {
-    {
-      open.addNewPack ? createDeck({ name: packName }) : editDeck({ id: cardId, name: packName })
-    }
-    setOpen({ ...open, addNewPack: false })
-  }
+    ;(open.addNewPack && createDeck({ name: packName })) ||
+      (open.editPack && editDeck({ id: cardId, name: packName })) ||
+      (open.deletePack && deleteDeck({ id: cardId }))
 
-  const handleDeleteCard = (id: string) => deleteDeck({ id })
+    setOpen({ ...open, addNewPack: false, editPack: false, deletePack: false })
+    setPackName('')
+  }
 
   const handleTabSort = (value: string) => {
     if (value === 'My Cards') {
@@ -125,6 +125,7 @@ export const PacksList = () => {
             onChangeCallback={value => handleTabSort(value)}
             options={tabSwitcherOptions}
             className={s.switcher}
+            defaultValue={tabSwitcherOptions[1].value}
           />
         </div>
         <div>
@@ -185,7 +186,12 @@ export const PacksList = () => {
                             setCardId(el.id)
                           }}
                         />
-                        <Trash onClick={() => handleDeleteCard(el.id)} />
+                        <Trash
+                          onClick={() => {
+                            setOpen({ ...open, deletePack: true })
+                            setCardId(el.id)
+                          }}
+                        />
                       </>
                     )}
                   </div>

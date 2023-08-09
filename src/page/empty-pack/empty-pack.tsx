@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 
 import { Back } from '../../common'
 import { Button, Modal, TextField, Typography } from '../../components'
-import { useCreateCardMutation } from '../../services/decks'
 
 import s from './empty-pack.module.scss'
 
@@ -12,15 +11,10 @@ type PropsType = {
   name?: string
 }
 export const EmptyPack: FC<PropsType> = ({ name }) => {
-  const [question, setQuestion] = useState<string>('')
-  const [answer, setAnswer] = useState<string>('')
+  // const [question, setQuestion] = useState<string>('')
+  // const [answer, setAnswer] = useState<string>('')
   const [open, setOpen] = useState<boolean>(false)
-  const [createCard] = useCreateCardMutation()
-
-  const addCardHandler = () => {
-    createCard({ id: deckId, question, answer })
-    setOpen(false)
-  }
+  // const [createCard] = useCreateCardMutation()
 
   return (
     <div className={s.emptyPackBlock}>
@@ -45,22 +39,22 @@ export const EmptyPack: FC<PropsType> = ({ name }) => {
         onClose={() => setOpen(false)}
         titleButton={'Add New Card'}
         showCloseButton={true}
-        callBack={addCardHandler}
+        callBack={() => {}}
         disableButton={false}
       >
         <TextField
           type={'default'}
-          value={question}
+          value={''}
           label={'Question'}
           placeholder={'Question'}
-          onChangeText={e => setQuestion(e)}
+          onChangeText={() => {}}
         />
         <TextField
           type={'default'}
-          value={answer}
+          value={'answer'}
           label={'Answer'}
           placeholder={'Answer'}
-          onChangeText={e => setAnswer(e)}
+          onChangeText={() => {}}
         />
       </Modal>
     </div>

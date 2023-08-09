@@ -186,7 +186,7 @@ export const MyPack = () => {
           </Modal>
         </div>
       ) : (
-        <EmptyPack name={data?.name} deckId={params.id} />
+        <EmptyPack name={data?.name} />
       )}
     </>
   )
