@@ -1,6 +1,7 @@
 import { FC } from 'react'
 
 import { Avatar, Logo, Logout, Profile } from '../../../common'
+import { useLogoutMutation } from '../../../services/auth'
 import { Button } from '../button'
 import { DropDownMenuDemo } from '../dropDownMenu'
 import { Typography } from '../typography'
@@ -12,6 +13,7 @@ type HeaderProps = {
   isAuth: boolean
 }
 export const Header: FC<HeaderProps> = ({ isAuth }) => {
+  const [logout] = useLogoutMutation()
   const dropDownMenu = [
     { id: 1, component: <ProfileBlock /> },
     {
@@ -26,7 +28,7 @@ export const Header: FC<HeaderProps> = ({ isAuth }) => {
     {
       id: 3,
       component: (
-        <Button variant={'link'} className={s.buttonDrop}>
+        <Button variant={'link'} className={s.buttonDrop} onClick={() => logout()}>
           <Logout />
           <Typography variant={'caption'}>Sign Out</Typography>
         </Button>
