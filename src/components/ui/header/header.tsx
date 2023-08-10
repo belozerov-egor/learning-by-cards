@@ -3,7 +3,8 @@ import { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { Avatar, Logo, Logout, Profile } from '../../../common'
-import { useLogoutMutation } from '../../../services/auth'
+import { useAppDispatch } from '../../../services'
+import { useLogoutMutation, util } from '../../../services/auth'
 import { Button } from '../button'
 import { DropDownMenuDemo } from '../dropDownMenu'
 import { Typography } from '../typography'
@@ -17,10 +18,12 @@ type HeaderProps = {
 export const Header: FC<HeaderProps> = ({ isAuth }) => {
   const [logout] = useLogoutMutation()
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const logoutHandler = () => {
     logout()
       .unwrap()
       .then(() => {
+        dispatch(util.resetApiState())
         navigate('/login')
       })
   }
