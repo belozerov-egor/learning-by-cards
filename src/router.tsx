@@ -7,7 +7,8 @@ import {
 } from 'react-router-dom'
 
 import { Layout } from './components'
-import { PacksList, MyPack } from './page'
+import { PacksList, MyPack, FriendsPack } from './page'
+import { EmptyPack } from './page/empty-pack'
 import { useMeQuery } from './services/auth'
 import { Login } from './services/auth/components'
 
@@ -26,6 +27,14 @@ const privateRoutes: RouteObject[] = [
   {
     path: '/my-pack/:id',
     element: <MyPack />,
+  },
+  {
+    path: '/friends-pack/:id',
+    element: <FriendsPack />,
+  },
+  {
+    path: '/empty-pack/:name/:id',
+    element: <EmptyPack />,
   },
 ]
 

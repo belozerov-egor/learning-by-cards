@@ -2,43 +2,58 @@ import { useState } from 'react'
 
 import { Link, useParams } from 'react-router-dom'
 
-import { ArrowDown, ArrowUp, Back, Edit, Play, SubMenu, Trash } from '../../common'
-import {
-  Button,
-  CheckBox,
-  DropDownMenuDemo,
-  Grade,
-  Modal,
-  TableElement,
-  TextField,
-  Typography,
-} from '../../components'
+import { Back, Edit, Play, SubMenu, Trash } from '../../common'
+import { Button, DropDownMenuDemo, TextField, Typography } from '../../components'
+import { useAppSelector } from '../../services'
 import { useGetCardsQuery } from '../../services/cards'
-import { useGetDeckQuery } from '../../services/decks'
-import { useAppSelector } from '../../services/store.ts'
-import { EmptyPack } from '../empty-pack'
+import { useCreateCardMutation, useGetDeckQuery } from '../../services/decks'
+import { ModalType } from '../pack-list'
 
+import { CardsModal } from './cards-modal'
+import { MyPackTable } from './my-pack-table/my-pack-table.tsx'
 import s from './my-pack.module.scss'
 
 export const MyPack = () => {
   const params = useParams<{ id: string }>()
-  const [openEdit, setOpenEdit] = useState(false)
-  const [openDelete, setOpenDelete] = useState(false)
+  const [open, setOpen] = useState<ModalType>({
+    addNewPack: false,
+    editPack: false,
+    deletePack: false,
+  })
+  const [cardId, setCardId] = useState<string>('')
   const [privatePack, setPrivatePack] = useState(false)
-  const [question, setQuestion] = useState('')
+  const [packName, setPackName] = useState<string>('')
+  const [cardSettings, setCardSettings] = useState({
+    question: '',
+    answer: '',
+  })
   const isMyPack = useAppSelector(state => state.cardsSlice.isMyPack)
+  const [createCard] = useCreateCardMutation()
+  const { data } = useGetDeckQuery({
+    id: params.id,
+  })
 
-  const handleOpenEdit = () => {
-    setOpenEdit(true)
+  const { data: dataCards } = useGetCardsQuery({
+    id: params.id,
+  })
+
+  const [sortTable, setSortTable] = useState(false)
+  const changeSort = (status: boolean) => setSortTable(status)
+  const handleOpen = (value: string) => {
+    setOpen(prevOpen => ({
+      ...prevOpen,
+      [value]: true,
+    }))
   }
-  const handleCloseEdit = () => {
-    setOpenEdit(false)
+  const handleClose = (value: string) => {
+    setOpen(prevOpen => ({
+      ...prevOpen,
+      [value]: false,
+    }))
   }
-  const handleOpenDelete = () => {
-    setOpenDelete(true)
-  }
-  const handleCloseDelete = () => {
-    setOpenDelete(false)
+
+  const modalCallback = () => {
+    createCard({ id: data?.id, question: cardSettings.question, answer: cardSettings.answer })
   }
 
   const dropDownMenu = [
@@ -54,7 +69,7 @@ export const MyPack = () => {
     {
       id: 2,
       component: (
-        <Button variant={'link'} className={s.buttonDrop} onClick={handleOpenEdit}>
+        <Button variant={'link'} className={s.buttonDrop} onClick={() => handleOpen('editPack')}>
           <Edit />
           <Typography variant={'caption'}>Edit</Typography>
         </Button>
@@ -63,7 +78,7 @@ export const MyPack = () => {
     {
       id: 3,
       component: (
-        <Button variant={'link'} className={s.buttonDrop} onClick={handleOpenDelete}>
+        <Button variant={'link'} className={s.buttonDrop} onClick={() => handleOpen('deletePack')}>
           <Trash />
           <Typography variant={'caption'}>Delete</Typography>
         </Button>
@@ -71,123 +86,42 @@ export const MyPack = () => {
     },
   ]
 
-  const { data } = useGetDeckQuery({
-    id: params.id,
-  })
-
-  const { data: dataCards } = useGetCardsQuery({
-    id: params.id,
-    question,
-  })
-
-  const [sortTable, setSortTable] = useState(false)
-  const changeSort = (status: boolean) => setSortTable(status)
-
-  const setSearchByName = (event: string) => {
-    setQuestion(event)
-  }
+  // const setSearchByName = (event: string) => {
+  //   setQuestion(event)
+  // }
 
   return (
     <>
-      {dataCards?.items.length !== 0 ? (
-        <div className={s.myPackBlock}>
-          <Button as={Link} to="/" variant={'link'} className={s.backButton}>
-            <Back />
-            Back to Packs List
-          </Button>
-          <div className={s.headBlock}>
-            <div className={s.titleMenu}>
-              <Typography variant={'large'}>{data?.name}</Typography>
-              {isMyPack && <DropDownMenuDemo items={dropDownMenu} trigger={<SubMenu />} />}
-            </div>
-            {isMyPack ? (
-              <Button variant={'primary'}>Add New Card</Button>
-            ) : (
-              <Button variant={'primary'}>Learn to Pack</Button>
-            )}
+      <div className={s.myPackBlock}>
+        <Button as={Link} to="/" variant={'link'} className={s.backButton}>
+          <Back />
+          Back to Packs List
+        </Button>
+        <div className={s.headBlock}>
+          <div className={s.titleMenu}>
+            <Typography variant={'large'}>{data?.name}</Typography>
+            {isMyPack && <DropDownMenuDemo items={dropDownMenu} trigger={<SubMenu />} />}
           </div>
-          <TextField
-            value={question}
-            onChangeText={event => setSearchByName(event)}
-            type={'searchType'}
-            className={s.textField}
-          />
-          <TableElement.Root>
-            <TableElement.Head>
-              <TableElement.Row>
-                <TableElement.HeadCell>Question</TableElement.HeadCell>
-                <TableElement.HeadCell>Answer</TableElement.HeadCell>
-                <TableElement.HeadCell
-                  onClick={() => {
-                    changeSort(!sortTable)
-                  }}
-                >
-                  Last Updated {sortTable ? <ArrowDown /> : <ArrowUp />}
-                </TableElement.HeadCell>
-                <TableElement.HeadCell>Grade</TableElement.HeadCell>
-                {isMyPack && <TableElement.HeadCell></TableElement.HeadCell>}
-              </TableElement.Row>
-            </TableElement.Head>
-            <TableElement.Body>
-              {dataCards?.items.map(el => {
-                return (
-                  <TableElement.Row key={el.id}>
-                    <TableElement.Cell>{el.question}</TableElement.Cell>
-                    <TableElement.Cell>{el.answer}</TableElement.Cell>
-                    <TableElement.Cell>
-                      {new Date(el.updated).toLocaleDateString('ru-RU')}
-                    </TableElement.Cell>
-                    <TableElement.Cell>
-                      <Grade rating={el.rating} />
-                    </TableElement.Cell>
-                    {isMyPack && (
-                      <TableElement.Cell>
-                        <div className={s.icons}>
-                          <Edit />
-                          <Trash />
-                        </div>
-                      </TableElement.Cell>
-                    )}
-                  </TableElement.Row>
-                )
-              })}
-            </TableElement.Body>
-          </TableElement.Root>
-          <Modal
-            title={'Edite Pack'}
-            showCloseButton={true}
-            open={openEdit}
-            onClose={handleCloseEdit}
-            titleButton={'Save Changes'}
-          >
-            <TextField type={'default'} label={'Name Pack'} placeholder={'name'} />
-            <CheckBox
-              variant={'withText'}
-              checkBoxText={'Private pack'}
-              checked={privatePack}
-              onChange={() => setPrivatePack(!privatePack)}
-            />
-          </Modal>
-          <Modal
-            title={'Delete Pack'}
-            showCloseButton={true}
-            open={openDelete}
-            onClose={handleCloseDelete}
-            titleButton={'Save Changes'}
-          >
-            <Typography variant={'body1'}>
-              Do you really want to remove{' '}
-              <Typography variant={'subtitle1'} className={s.packName}>
-                Pack Name?
-              </Typography>{' '}
-              <br />
-              All cards will be deleted.
-            </Typography>
-          </Modal>
+          <Button variant={'primary'}>Add New Card</Button>
         </div>
-      ) : (
-        <EmptyPack name={data?.name} />
-      )}
+        <TextField
+          value={cardSettings.question}
+          // onChangeText={event => setSearchByName(event)}
+          type={'searchType'}
+          className={s.textField}
+        />
+        <MyPackTable dataCards={dataCards} sortTable={sortTable} setSortTable={setSortTable} />
+        <CardsModal
+          open={open}
+          cardSettings={cardSettings}
+          handleClose={() => {}}
+          privatePack={privatePack}
+          setPrivatePack={setPrivatePack}
+          setPackName={setPackName}
+          handleCreateClicked={modalCallback}
+        />
+      </div>
+      )
     </>
   )
 }

@@ -10,6 +10,7 @@ import {
   TextField,
   Typography,
 } from '../../components'
+import { useAppDispatch, useAppSelector } from '../../services'
 import { useMeQuery } from '../../services/auth'
 import { cardsSlice } from '../../services/cards'
 import {
@@ -19,7 +20,6 @@ import {
   useUpdateDeckMutation,
 } from '../../services/decks'
 import { deckSlice } from '../../services/decks/deck.slice.ts'
-import { useAppDispatch, useAppSelector } from '../../services/store.ts'
 
 import { usePackDeckState } from './hook'
 import { PackModal } from './pack-modal'
@@ -157,12 +157,20 @@ export const PacksList = () => {
         </TableElement.Head>
         <TableElement.Body>
           {data?.items.map(el => {
+            const lastRoute = () => {
+              if (el.author.id === meData?.id) {
+                return el.cardsCount !== 0 ? `/my-pack/${el.id}` : `/empty-pack/${el.name}/${el.id}`
+              } else {
+                return `/friends-pack/${el.id}`
+              }
+            }
+
             return (
               <TableElement.Row key={el.id}>
                 <TableElement.Cell>
                   <Button
                     as={Link}
-                    to={`/my-pack/${el.id}`}
+                    to={lastRoute()}
                     variant={'link'}
                     onClick={() => setIsMyPackHandler(el.author.id === meData?.id)}
                   >

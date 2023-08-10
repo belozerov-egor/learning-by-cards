@@ -11,6 +11,7 @@ const cardsApi = baseApi.injectEndpoints({
           method: 'GET',
           params: { question, ...args },
         }),
+        providesTags: ['Cards'],
       }),
     }
   },

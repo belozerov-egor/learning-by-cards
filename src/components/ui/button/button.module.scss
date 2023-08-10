@@ -21,8 +21,9 @@
   border: none;
   border-radius: 0.25rem;
 
-  &:focus {
-    border: 2px solid var(--info-700, #2f68cc);
+  &:focus,
+  &:focus-visible {
+    outline: 2px solid var(--info-700, #2f68cc);
   }
 }
 
