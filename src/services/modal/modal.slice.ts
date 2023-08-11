@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
+import { RootState } from '../store.ts'
+
 import { NameModal } from './types.ts'
 
 const initialState = {
@@ -39,3 +41,5 @@ export const modalSlice = createSlice({
     },
   },
 })
+export const selectShowModal = (state: RootState) => state.modalSlice.showModal
+export const selectSettingsValue = (state: RootState) => state.modalSlice.settingsValue
