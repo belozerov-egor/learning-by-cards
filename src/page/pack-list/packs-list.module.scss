@@ -1,7 +1,7 @@
 .packListBlock {
   max-width: 80rem;
   margin: 0 auto;
-  padding-top: 2.06rem;
+  padding: 2.06rem 0;
 
   .headBlock {
     display: flex;
@@ -33,9 +33,14 @@
     }
   }
 
-  .icons {
+  .pagination {
     display: flex;
-    gap: 0.62rem;
-    justify-content: end;
+    gap: 1.5rem;
+    align-items: center;
+    margin-top: 1rem;
+
+    .selectPagination {
+      width: 70px;
+    }
   }
 }

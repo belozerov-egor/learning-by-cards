@@ -15,7 +15,7 @@ const range = (start: number, end: number) => {
 const DOTS = '...'
 
 type UsePaginationPropsType = {
-  count: number
+  count?: number
   siblings?: number
   page: number
   onChange: (pageNumber: number) => void

@@ -2,8 +2,7 @@ import { FC } from 'react'
 
 import { clsx } from 'clsx'
 
-import { ArrowLeft, ArrowRight } from '../../../common/assets/img'
-import { SelectDemo } from '../select'
+import { ArrowLeft, ArrowRight } from '../../../common'
 
 import s from './pagination.module.scss'
 import { usePagination } from './usePagination'
@@ -21,7 +20,7 @@ type PaginationConditionals =
     }
 
 export type PaginationProps = {
-  count: number
+  count?: number
   page: number
   onChange: (page: number) => void
   siblings?: number
@@ -43,15 +42,7 @@ const classNames = {
   },
 }
 
-export const Pagination: FC<PaginationProps> = ({
-  onChange,
-  count,
-  page = 1,
-  perPage = null,
-  perPageOptions,
-  onPerPageChange,
-  siblings,
-}) => {
+export const Pagination: FC<PaginationProps> = ({ onChange, count, page = 1, siblings }) => {
   const {
     paginationRange,
     isLastPage,
@@ -66,8 +57,6 @@ export const Pagination: FC<PaginationProps> = ({
     siblings,
   })
 
-  const showPerPageSelect = !!perPage && !!perPageOptions && !!onPerPageChange
-
   return (
     <div className={classNames.root}>
       <div className={classNames.container}>
@@ -81,16 +70,6 @@ export const Pagination: FC<PaginationProps> = ({
 
         <NextButton onClick={handleNextPageClicked} disabled={isLastPage} />
       </div>
-
-      {showPerPageSelect && (
-        <PerPageSelect
-          {...{
-            perPage,
-            perPageOptions,
-            onPerPageChange,
-          }}
-        />
-      )}
     </div>
   )
 }
@@ -158,35 +137,5 @@ const MainPaginationButtons: FC<MainPaginationButtonsProps> = ({
         return <PageButton key={index} page={page} selected={isSelected} onClick={onClick(page)} />
       })}
     </>
-  )
-}
-
-export type PerPageSelectProps = {
-  perPage: number
-  perPageOptions: number[]
-  onPerPageChange: (itemPerPage: number) => void
-}
-
-export const PerPageSelect: FC<PerPageSelectProps> = ({
-  perPageOptions,
-  perPage,
-  onPerPageChange,
-}) => {
-  const selectOptions = perPageOptions.map(value => ({
-    label: value,
-    value,
-  }))
-
-  return (
-    <div className={classNames.selectBox}>
-      Показать
-      <SelectDemo
-        className={classNames.select}
-        value={perPage}
-        options={selectOptions}
-        onChangeOption={onPerPageChange}
-      />
-      на странице
-    </div>
   )
 }

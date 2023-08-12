@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { RootState } from '../store.ts'
-
 import { NameModal } from './types.ts'
 
 const initialState = {
@@ -14,6 +12,7 @@ const initialState = {
     deleteCard: false,
   },
   settingsValue: {
+    privatePack: false,
     packName: '',
     question: '',
     answer: '',
@@ -30,6 +29,9 @@ export const modalSlice = createSlice({
     setCloseModal: (state, action: PayloadAction<NameModal>) => {
       state.showModal[action.payload] = false
     },
+    setPrivatePack: (state, action: PayloadAction<boolean>) => {
+      state.settingsValue.privatePack = action.payload
+    },
     setPackName: (state, action: PayloadAction<string>) => {
       state.settingsValue.packName = action.payload
     },
@@ -41,5 +43,5 @@ export const modalSlice = createSlice({
     },
   },
 })
-export const selectShowModal = (state: RootState) => state.modalSlice.showModal
-export const selectSettingsValue = (state: RootState) => state.modalSlice.settingsValue
+
+export const modalActions = modalSlice.actions

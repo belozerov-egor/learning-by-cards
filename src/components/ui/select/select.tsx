@@ -10,13 +10,14 @@ import s from './select.module.scss'
 
 export type SelectPropsType = {
   label?: string
-  placeholder: ReactNode
-  value?: string
-  onValueChange?: (value: string) => void
-  defaultValue?: string
-  options: { label: string; value: string }[]
+  placeholder?: ReactNode
+  value?: any
+  onValueChange?: (value: any) => void
+  defaultValue?: any
+  options: any[]
   disabled?: boolean
   required?: boolean
+  className?: string
 }
 
 export const SelectDemo: FC<SelectPropsType> = ({
@@ -28,6 +29,7 @@ export const SelectDemo: FC<SelectPropsType> = ({
   options,
   disabled,
   required,
+  className,
 }) => (
   <Label.Root>
     <Typography
@@ -44,12 +46,14 @@ export const SelectDemo: FC<SelectPropsType> = ({
       disabled={disabled}
       required={required}
     >
-      <Select.Trigger className={disabled ? s.triggerDisabled : s.trigger} asChild tabIndex={1}>
+      <Select.Trigger
+        className={`${disabled ? s.triggerDisabled : s.trigger} ${className}`}
+        asChild
+        tabIndex={1}
+      >
         <div>
           <Select.Value placeholder={placeholder} />
-          {/*<Select.Icon asChild>*/}
           <SelectArrow className={disabled ? s.iconDisabled : s.icon} />
-          {/*</Select.Icon>*/}
         </div>
       </Select.Trigger>
       <Select.Portal>
@@ -57,7 +61,7 @@ export const SelectDemo: FC<SelectPropsType> = ({
           <Select.Viewport>
             {options.map(el => (
               <Select.Item key={el.value} value={el.value} className={s.item}>
-                <Select.ItemText>{el.label}</Select.ItemText>
+                <Select.ItemText>{el.value}</Select.ItemText>
               </Select.Item>
             ))}
           </Select.Viewport>

@@ -68,6 +68,9 @@ dependencies:
   react-router-dom:
     specifier: ^6.14.2
     version: 6.14.2(react-dom@18.2.0)(react@18.2.0)
+  reselect:
+    specifier: ^4.1.8
+    version: 4.1.8
   zod:
     specifier: ^3.21.4
     version: 3.21.4
@@ -11283,7 +11286,7 @@ packages:
 
   /stable@0.1.8:
     resolution: {integrity: sha512-ji9qxRnOVfcuLDySj9qzhGSEFVobyt1kIOSkj1qZzYLzq7Tos/oUUWvotUPQLlrsidqsK6tBH89Bc9kL5zHA6w==}
-    deprecated: 'Modern JS already guarantees Array#sort() is a stable sort, so this library is deprecated. See the compatibility friends-table on MDN: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#browser_compatibility'
+    deprecated: 'Modern JS already guarantees Array#sort() is a stable sort, so this library is deprecated. See the compatibility table on MDN: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#browser_compatibility'
     dev: true
 
   /statuses@2.0.1:
