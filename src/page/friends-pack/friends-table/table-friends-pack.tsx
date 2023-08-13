@@ -33,7 +33,7 @@ export const TableFriendsPack: FC<PropsType> = ({ dataCards, setSortTable, sortT
                 {new Date(el.updated).toLocaleDateString('ru-RU')}
               </TableElement.Cell>
               <TableElement.Cell>
-                <Grade rating={el.rating} />
+                <Grade rating={el.grade} />
               </TableElement.Cell>
             </TableElement.Row>
           )

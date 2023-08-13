@@ -1,30 +1,70 @@
 import { FC } from 'react'
 
-import { ArrowDown, ArrowUp, Edit, Trash } from '../../../common'
-import { Grade, TableElement } from '../../../components'
+import { Edit, Trash } from '../../../common'
+import { Grade, Sort, TableElement } from '../../../components'
+import { HeaderTable } from '../../../components/ui/table/header-table.tsx'
+import { modalActions, useAppDispatch } from '../../../services'
 import { CardsResponse } from '../../../services/cards/types.ts'
 
 import s from './my-pack-table.module.scss'
 
 type PropsType = {
-  dataCards?: CardsResponse | undefined
-  setSortTable: (value: boolean) => void
-  sortTable: boolean
+  dataCards: CardsResponse | undefined
+  setCardId: (cardId: string) => void
+  sort: Sort
+  setSort: (value: Sort) => void
 }
-export const MyPackTable: FC<PropsType> = ({ dataCards, setSortTable, sortTable }) => {
+export type Column = {
+  key: string
+  title: string
+  sortable?: boolean
+}
+
+const columns: Array<Column> = [
+  {
+    key: 'question',
+    title: 'Question',
+    sortable: true,
+  },
+  {
+    key: 'answer',
+    title: 'Answer',
+    sortable: true,
+  },
+  {
+    key: 'updated',
+    title: 'Last Updated',
+    sortable: true,
+  },
+  {
+    key: 'grade',
+    title: 'Grade',
+    sortable: true,
+  },
+  {
+    key: 'activity',
+    title: '',
+  },
+]
+
+export const MyPackTable: FC<PropsType> = ({ dataCards, setCardId, sort, setSort }) => {
+  const dispatch = useAppDispatch()
+  const onEditHandler = (question: string, answer: string, cardId: string) => {
+    dispatch(modalActions.setOpenModal('editCard'))
+    dispatch(modalActions.setQuestion(question))
+    dispatch(modalActions.setAnswer(answer))
+    setCardId(cardId)
+  }
+
+  const onDeleteHandler = (question: string, cardId: string) => {
+    dispatch(modalActions.setOpenModal('deleteCard'))
+    dispatch(modalActions.setQuestion(question))
+    setCardId(cardId)
+  }
+
   return (
     <TableElement.Root>
-      <TableElement.Head>
-        <TableElement.Row>
-          <TableElement.HeadCell>Question</TableElement.HeadCell>
-          <TableElement.HeadCell>Answer</TableElement.HeadCell>
-          <TableElement.HeadCell onClick={() => setSortTable(!sortTable)}>
-            Last Updated {sortTable ? <ArrowDown /> : <ArrowUp />}
-          </TableElement.HeadCell>
-          <TableElement.HeadCell>Grade</TableElement.HeadCell>
-          <TableElement.HeadCell></TableElement.HeadCell>
-        </TableElement.Row>
-      </TableElement.Head>
+      <HeaderTable columns={columns} sort={sort} onSort={setSort} />
       <TableElement.Body>
         {dataCards?.items.map(el => {
           return (
@@ -35,12 +75,12 @@ export const MyPackTable: FC<PropsType> = ({ dataCards, setSortTable, sortTable 
                 {new Date(el.updated).toLocaleDateString('ru-RU')}
               </TableElement.Cell>
               <TableElement.Cell>
-                <Grade rating={el.rating} />
+                <Grade rating={el.grade} />
               </TableElement.Cell>
               <TableElement.Cell>
                 <div className={s.icons}>
-                  <Edit />
-                  <Trash />
+                  <Edit onClick={() => onEditHandler(el.question, el.answer, el.id)} />
+                  <Trash onClick={() => onDeleteHandler(el.question, el.id)} />
                 </div>
               </TableElement.Cell>
             </TableElement.Row>

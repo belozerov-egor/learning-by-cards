@@ -1,6 +1,6 @@
 import { baseApi } from '../base-api.ts'
 
-import { Deck, DecksResponse } from './types.ts'
+import { Deck, DecksResponse, LearnDeckResponse } from './types.ts'
 
 const decksApi = baseApi.injectEndpoints({
   endpoints: builder => {
@@ -57,6 +57,30 @@ const decksApi = baseApi.injectEndpoints({
         }),
         invalidatesTags: ['Decks'],
       }),
+      learnDeck: builder.query<
+        LearnDeckResponse,
+        { id: string | undefined; previousCardId?: string }
+      >({
+        query: ({ id, previousCardId }) => {
+          return {
+            url: `v1/decks/${id}/learn`,
+            method: 'GET',
+            params: { previousCardId },
+          }
+        },
+        providesTags: ['Decks'],
+      }),
+      updateGradeCard: builder.mutation<
+        LearnDeckResponse,
+        { id: string | undefined; cardId: string | undefined; grade: number }
+      >({
+        query: ({ id, cardId, grade }) => ({
+          url: `v1/decks/${id}/learn`,
+          method: 'POST',
+          body: { cardId, grade },
+        }),
+        invalidatesTags: ['Decks'],
+      }),
     }
   },
 })
@@ -78,4 +102,6 @@ export const {
   useDeletedDeckMutation,
   useUpdateDeckMutation,
   useCreateCardMutation,
+  useLearnDeckQuery,
+  useUpdateGradeCardMutation,
 } = decksApi

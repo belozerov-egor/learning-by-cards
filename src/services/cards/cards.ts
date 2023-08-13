@@ -13,8 +13,33 @@ const cardsApi = baseApi.injectEndpoints({
         }),
         providesTags: ['Cards'],
       }),
+      editCard: builder.mutation<any, CreateEditArguments>({
+        query: ({ id, ...args }) => ({
+          url: `v1/cards/${id}`,
+          method: 'PATCH',
+          body: { ...args },
+        }),
+        invalidatesTags: ['Cards'],
+      }),
+      deleteCard: builder.mutation<any, { id: string }>({
+        query: ({ id }) => ({
+          url: `v1/cards/${id}`,
+          method: 'DELETE',
+        }),
+        invalidatesTags: ['Cards'],
+      }),
     }
   },
 })
 
-export const { useGetCardsQuery } = cardsApi
+export const { useGetCardsQuery, useEditCardMutation, useDeleteCardMutation } = cardsApi
+
+type CreateEditArguments = {
+  id: string
+  questionImg?: string
+  answerImg?: string
+  question?: string
+  answer?: string
+  questionVideo?: string
+  answerVideo?: string
+}

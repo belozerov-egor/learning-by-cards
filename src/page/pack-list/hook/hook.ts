@@ -12,7 +12,7 @@ export const usePackDeckState = (
 ) => {
   const [cardId, setCardId] = useState<string>('')
   const [userId, setUserId] = useState<string>('')
-  const [sort, setSort] = useState<Sort>({ key: 'updated', direction: 'asc' })
+  const [sort, setSort] = useState<Sort>({ key: 'updated', direction: 'desc' })
   const [valueSlider, setValueSlider] = useState<number[]>([
     sliderValues.minValue,
     sliderValues.maxValue,

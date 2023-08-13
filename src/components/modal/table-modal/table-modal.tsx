@@ -28,7 +28,7 @@ export const TableModal: FC<PropsType> = props => {
 
   const setClose = (value: NameModal) => {
     dispatch(modalActions.setCloseModal(value))
-    dispatch(modalActions.setClearState())
+    dispatch(modalActions.setClearState({}))
   }
 
   let onCloseHandler

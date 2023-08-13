@@ -2,7 +2,7 @@ export type GetRequestType = {
   id?: string
   question?: string
   answer?: string
-  orderBy?: string
+  orderBy: string | null
   currentPage?: number
   itemsPerPage?: number
 }
@@ -22,7 +22,7 @@ export type RootObjectItems = {
   questionImg: string
   questionVideo: string
   answerVideo: string
-  rating: number
+  grade: number
   created: string
   updated: string
 }

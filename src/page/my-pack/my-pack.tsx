@@ -1,66 +1,100 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { Back, Edit, Play, SubMenu, Trash } from '../../common'
-import { Button, DropDownMenuDemo, TextField, Typography } from '../../components'
-import { useAppSelector } from '../../services'
-import { useGetCardsQuery } from '../../services/cards'
-import { useCreateCardMutation, useGetDeckQuery } from '../../services/decks'
-import { ModalType } from '../pack-list'
+import { Button, DropDownMenuDemo, Sort, TableModal, TextField, Typography } from '../../components'
+import {
+  modalActions,
+  NameModal,
+  selectOpenModals,
+  selectSettings,
+  useAppDispatch,
+  useAppSelector,
+  useCreateCardMutation,
+  useDeletedDeckMutation,
+  useGetDeckQuery,
+  useUpdateDeckMutation,
+} from '../../services'
+import { useDeleteCardMutation, useEditCardMutation, useGetCardsQuery } from '../../services/cards'
 
-import { CardsModal } from './cards-modal'
 import { MyPackTable } from './my-pack-table/my-pack-table.tsx'
 import s from './my-pack.module.scss'
 
 export const MyPack = () => {
   const params = useParams<{ id: string }>()
-  const [open, setOpen] = useState<ModalType>({
-    addNewPack: false,
-    editPack: false,
-    deletePack: false,
-  })
   const [cardId, setCardId] = useState<string>('')
-  const [privatePack, setPrivatePack] = useState(false)
-  const [packName, setPackName] = useState<string>('')
-  const [cardSettings, setCardSettings] = useState({
-    question: '',
-    answer: '',
-  })
-  const isMyPack = useAppSelector(state => state.cardsSlice.isMyPack)
-  const [createCard] = useCreateCardMutation()
+  const [sort, setSort] = useState<Sort>({ key: 'updated', direction: 'desc' })
+  // const [perPage, setPerPage] = useState({ id: 1, value: itemsPerPage })
+  // const [page, setPage] = useState(currentPage)
+  const { editPack, deletePack, addCard, editCard, deleteCard } = useAppSelector(selectOpenModals)
+  const { privatePack, packName, question, answer } = useAppSelector(selectSettings)
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  // const onSetPerPageHandler = (value: number) => {
+  //   setPerPage({ ...perPage, value })
+  // }
+  const sortedString = useMemo(() => {
+    if (!sort) return null
+
+    return `${sort.key}-${sort.direction}`
+  }, [sort])
+
   const { data } = useGetDeckQuery({
     id: params.id,
   })
-
   const { data: dataCards } = useGetCardsQuery({
     id: params.id,
+    orderBy: sortedString,
   })
+  const [createCard] = useCreateCardMutation()
+  const [editItem] = useEditCardMutation()
+  const [deleteItem] = useDeleteCardMutation()
+  const [deleteDeck] = useDeletedDeckMutation()
+  const [editDeck] = useUpdateDeckMutation()
 
-  const [sortTable, setSortTable] = useState(false)
-  const changeSort = (status: boolean) => setSortTable(status)
-  const handleOpen = (value: string) => {
-    setOpen(prevOpen => ({
-      ...prevOpen,
-      [value]: true,
-    }))
-  }
-  const handleClose = (value: string) => {
-    setOpen(prevOpen => ({
-      ...prevOpen,
-      [value]: false,
-    }))
+  const openPackModal = (value: NameModal) => {
+    dispatch(modalActions.setOpenModal(value))
+    dispatch(modalActions.setPackName(data!.name))
+    setCardId(data!.id)
   }
 
-  const modalCallback = () => {
-    createCard({ id: data?.id, question: cardSettings.question, answer: cardSettings.answer })
+  const addCardModalHandler = () => {
+    dispatch(modalActions.setOpenModal('addCard'))
+  }
+
+  const onHandlerActionClicked = () => {
+    if (addCard) {
+      createCard({ id: params.id, question, answer })
+      dispatch(modalActions.setCloseModal('addCard'))
+      dispatch(modalActions.setQuestion(''))
+      dispatch(modalActions.setAnswer(''))
+    } else if (editCard) {
+      editItem({ id: cardId, question, answer })
+      dispatch(modalActions.setCloseModal('editCard'))
+      dispatch(modalActions.setQuestion(''))
+      dispatch(modalActions.setAnswer(''))
+    } else if (deleteCard) {
+      deleteItem({ id: cardId })
+      dispatch(modalActions.setCloseModal('deleteCard'))
+    } else if (editPack) {
+      editDeck({ id: cardId, name: packName, isPrivate: privatePack })
+      dispatch(modalActions.setCloseModal('editPack'))
+      dispatch(modalActions.setPackName(''))
+      dispatch(modalActions.setPrivatePack(false))
+    } else if (deletePack) {
+      deleteDeck({ id: cardId })
+      navigate('/')
+      dispatch(modalActions.setCloseModal('deletePack'))
+      dispatch(modalActions.setPackName(''))
+    }
   }
 
   const dropDownMenu = [
     {
       id: 1,
       component: (
-        <Button variant={'link'} className={s.buttonDrop}>
+        <Button as={Link} to={`/learn-pack/${params.id}`} variant={'link'} className={s.buttonDrop}>
           <Play />
           <Typography variant={'caption'}>Learn</Typography>
         </Button>
@@ -69,7 +103,7 @@ export const MyPack = () => {
     {
       id: 2,
       component: (
-        <Button variant={'link'} className={s.buttonDrop} onClick={() => handleOpen('editPack')}>
+        <Button variant={'link'} className={s.buttonDrop} onClick={() => openPackModal('editPack')}>
           <Edit />
           <Typography variant={'caption'}>Edit</Typography>
         </Button>
@@ -78,7 +112,11 @@ export const MyPack = () => {
     {
       id: 3,
       component: (
-        <Button variant={'link'} className={s.buttonDrop} onClick={() => handleOpen('deletePack')}>
+        <Button
+          variant={'link'}
+          className={s.buttonDrop}
+          onClick={() => openPackModal('deletePack')}
+        >
           <Trash />
           <Typography variant={'caption'}>Delete</Typography>
         </Button>
@@ -100,28 +138,21 @@ export const MyPack = () => {
         <div className={s.headBlock}>
           <div className={s.titleMenu}>
             <Typography variant={'large'}>{data?.name}</Typography>
-            {isMyPack && <DropDownMenuDemo items={dropDownMenu} trigger={<SubMenu />} />}
+            <DropDownMenuDemo items={dropDownMenu} trigger={<SubMenu />} />
           </div>
-          <Button variant={'primary'}>Add New Card</Button>
+          <Button variant={'primary'} onClick={addCardModalHandler}>
+            Add New Card
+          </Button>
         </div>
         <TextField
-          value={cardSettings.question}
+          value={''}
           // onChangeText={event => setSearchByName(event)}
           type={'searchType'}
           className={s.textField}
         />
-        <MyPackTable dataCards={dataCards} sortTable={sortTable} setSortTable={setSortTable} />
-        <CardsModal
-          open={open}
-          cardSettings={cardSettings}
-          handleClose={() => {}}
-          privatePack={privatePack}
-          setPrivatePack={setPrivatePack}
-          setPackName={setPackName}
-          handleCreateClicked={modalCallback}
-        />
+        <MyPackTable dataCards={dataCards} sort={sort} setSort={setSort} setCardId={setCardId} />
+        <TableModal handleClicked={onHandlerActionClicked} />
       </div>
-      )
     </>
   )
 }

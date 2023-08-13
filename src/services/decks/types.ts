@@ -17,11 +17,27 @@ export type Deck = {
   isPrivate: boolean
   shots: number
   cover?: string | null
-  rating: number
+  grade: number
   isDeleted?: boolean
   isBlocked?: boolean
   created: string
   updated: string
   cardsCount: number
   author: Author
+}
+
+export type LearnDeckResponse = {
+  id: string
+  deckId: string
+  userId: string
+  question: string
+  answer: string
+  shots: number
+  answerImg: string
+  questionImg: string
+  questionVideo: string
+  answerVideo: string
+  grade: number
+  created: string
+  updated: string
 }

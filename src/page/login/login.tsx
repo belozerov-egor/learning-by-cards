@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 
 import { Navigate, useNavigate } from 'react-router-dom'
 
-import { SignIn } from '../../../../components'
-import { useLoginMutation, useMeQuery } from '../../auth.ts'
+import { SignIn } from '../../components'
+import { useLoginMutation, useMeQuery } from '../../services'
 
 export const Login = () => {
   const [login] = useLoginMutation()
