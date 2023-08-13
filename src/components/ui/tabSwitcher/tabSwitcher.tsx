@@ -7,29 +7,25 @@ import { Typography } from '../typography'
 import s from './tabSwitcher.module.scss'
 
 type PropsType = {
-  className?: string
-  options: any[]
+  classname?: string
+  options?: any[]
   onChangeCallback?: (value: string) => void
-  defaultValue: string
+  defaultValue?: string
 }
 export const TabSwitcher: FC<PropsType> = ({
   options,
   onChangeCallback,
+  classname,
   defaultValue,
-  className,
 }) => {
   return (
-    <Tabs.Root
-      className={`${s.tabsRoot} `}
-      defaultValue={defaultValue}
-      onValueChange={onChangeCallback}
-    >
+    <Tabs.Root className={s.tabsRoot} onValueChange={onChangeCallback} defaultValue={defaultValue}>
       <Tabs.List className={s.tabsList}>
         {options?.map((tab, index) => {
           return (
             <Tabs.Trigger
               disabled={tab.isDisabled}
-              className={`${s.tabsTrigger} ${className}`}
+              className={`${s.tabsTrigger} ${classname}`}
               value={tab.value}
               key={index}
             >

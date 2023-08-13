@@ -1,28 +1,47 @@
 import { FC } from 'react'
 
-import { ArrowDown, ArrowUp } from '../../../common'
-import { Grade, TableElement } from '../../../components'
+import { Grade, Sort, TableElement } from '../../../components'
+import { HeaderTable } from '../../../components/ui/table/header-table.tsx'
 import { CardsResponse } from '../../../services/cards/types.ts'
 
 type PropsType = {
-  dataCards?: CardsResponse | undefined
-  setSortTable: (value: boolean) => void
-  sortTable: boolean
+  dataCards: CardsResponse | undefined
+  sort: Sort
+  setSort: (value: Sort) => void
+}
+export type Column = {
+  key: string
+  title: string
+  sortable?: boolean
 }
 
-export const TableFriendsPack: FC<PropsType> = ({ dataCards, setSortTable, sortTable }) => {
+const columns: Array<Column> = [
+  {
+    key: 'question',
+    title: 'Question',
+    sortable: true,
+  },
+  {
+    key: 'answer',
+    title: 'Answer',
+    sortable: true,
+  },
+  {
+    key: 'updated',
+    title: 'Last Updated',
+    sortable: true,
+  },
+  {
+    key: 'grade',
+    title: 'Grade',
+    sortable: true,
+  },
+]
+
+export const FriendsTable: FC<PropsType> = ({ sort, setSort, dataCards }) => {
   return (
     <TableElement.Root>
-      <TableElement.Head>
-        <TableElement.Row>
-          <TableElement.HeadCell>Question</TableElement.HeadCell>
-          <TableElement.HeadCell>Answer</TableElement.HeadCell>
-          <TableElement.HeadCell onClick={() => setSortTable(!sortTable)}>
-            Last Updated {sortTable ? <ArrowDown /> : <ArrowUp />}
-          </TableElement.HeadCell>
-          <TableElement.HeadCell>Grade</TableElement.HeadCell>
-        </TableElement.Row>
-      </TableElement.Head>
+      <HeaderTable columns={columns} sort={sort} onSort={setSort} />
       <TableElement.Body>
         {dataCards?.items.map(el => {
           return (
