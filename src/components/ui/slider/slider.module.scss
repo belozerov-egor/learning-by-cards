@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 251px;
+  width: 15.6875rem;
 
   .sliderRoot {
     touch-action: none;
@@ -13,8 +13,8 @@
     display: flex;
     align-items: center;
 
-    width: 155px;
-    height: 20px;
+    width: 9.6875rem;
+    height: 1.25rem;
 
     .sliderTrack {
       position: relative;
@@ -36,6 +36,8 @@
 
     .sliderThumb {
       all: unset;
+
+      cursor: pointer;
 
       position: relative;
 

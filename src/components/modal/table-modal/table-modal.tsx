@@ -15,7 +15,7 @@ import { PackModalValue } from '../pack-modal-value'
 import s from './table-modal.module.scss'
 
 type PropsType = {
-  handleClicked: () => void
+  handleClicked: (value: NameModal) => void
 }
 
 export const TableModal: FC<PropsType> = props => {
@@ -34,37 +34,44 @@ export const TableModal: FC<PropsType> = props => {
   let onCloseHandler
   let title
   let titleButton
+  let callbackClicked
 
   switch (true) {
     case addPack:
       onCloseHandler = () => setClose('addPack')
       title = 'Add New Pack'
       titleButton = 'Add New Pack'
+      callbackClicked = () => handleClicked('addPack')
       break
     case editPack:
       onCloseHandler = () => setClose('editPack')
       title = 'Edit Pack'
       titleButton = 'Save Changes'
+      callbackClicked = () => handleClicked('editPack')
       break
     case deletePack:
       onCloseHandler = () => setClose('deletePack')
       title = 'Delete Pack'
       titleButton = 'Delete Pack'
+      callbackClicked = () => handleClicked('deletePack')
       break
     case addCard:
       onCloseHandler = () => setClose('addCard')
       title = 'Add Card'
       titleButton = 'Add Card'
+      callbackClicked = () => handleClicked('addCard')
       break
     case editCard:
       onCloseHandler = () => setClose('editCard')
-      title = 'Edit Pack'
+      title = 'Edit Card'
       titleButton = 'Edit Card'
+      callbackClicked = () => handleClicked('editCard')
       break
     case deleteCard:
       onCloseHandler = () => setClose('deleteCard')
-      title = 'Delete Pack'
+      title = 'Delete Card'
       titleButton = 'Delete Card'
+      callbackClicked = () => handleClicked('deleteCard')
       break
     default:
       title = 'Name Pack'
@@ -79,7 +86,7 @@ export const TableModal: FC<PropsType> = props => {
       open={addPack || editPack || deletePack || addCard || editCard || deleteCard}
       onClose={onCloseHandler}
       titleButton={titleButton}
-      callBack={handleClicked}
+      callBack={callbackClicked}
     >
       {deleteCard || deletePack ? (
         <Typography variant={'body1'}>

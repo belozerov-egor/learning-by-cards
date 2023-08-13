@@ -12,13 +12,15 @@ import {
   useAppDispatch,
   useAppSelector,
   useCreateCardMutation,
+  useDeleteCardMutation,
   useDeletedDeckMutation,
+  useEditCardMutation,
+  useGetCardsQuery,
   useGetDeckQuery,
   useUpdateDeckMutation,
 } from '../../services'
-import { useDeleteCardMutation, useEditCardMutation, useGetCardsQuery } from '../../services/cards'
 
-import { MyPackTable } from './my-pack-table/my-pack-table.tsx'
+import { MyPackTable } from './my-pack-table'
 import s from './my-pack.module.scss'
 
 export const MyPack = () => {
@@ -56,6 +58,7 @@ export const MyPack = () => {
   const openPackModal = (value: NameModal) => {
     dispatch(modalActions.setOpenModal(value))
     dispatch(modalActions.setPackName(data!.name))
+    dispatch(modalActions.setPrivatePack(data!.isPrivate))
     setCardId(data!.id)
   }
 
@@ -63,31 +66,21 @@ export const MyPack = () => {
     dispatch(modalActions.setOpenModal('addCard'))
   }
 
-  const onHandlerActionClicked = () => {
+  const onHandlerActionClicked = (value: NameModal) => {
     if (addCard) {
       createCard({ id: params.id, question, answer })
-      dispatch(modalActions.setCloseModal('addCard'))
-      dispatch(modalActions.setQuestion(''))
-      dispatch(modalActions.setAnswer(''))
     } else if (editCard) {
       editItem({ id: cardId, question, answer })
-      dispatch(modalActions.setCloseModal('editCard'))
-      dispatch(modalActions.setQuestion(''))
-      dispatch(modalActions.setAnswer(''))
     } else if (deleteCard) {
       deleteItem({ id: cardId })
-      dispatch(modalActions.setCloseModal('deleteCard'))
     } else if (editPack) {
       editDeck({ id: cardId, name: packName, isPrivate: privatePack })
-      dispatch(modalActions.setCloseModal('editPack'))
-      dispatch(modalActions.setPackName(''))
-      dispatch(modalActions.setPrivatePack(false))
     } else if (deletePack) {
       deleteDeck({ id: cardId })
       navigate('/')
-      dispatch(modalActions.setCloseModal('deletePack'))
-      dispatch(modalActions.setPackName(''))
     }
+    dispatch(modalActions.setCloseModal(value))
+    dispatch(modalActions.setClearState({}))
   }
 
   const dropDownMenu = [

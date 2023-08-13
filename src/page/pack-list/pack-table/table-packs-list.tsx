@@ -5,8 +5,7 @@ import { Link } from 'react-router-dom'
 import { Edit, Play, Trash } from '../../../common'
 import { Button, Sort, TableElement } from '../../../components'
 import { HeaderTable } from '../../../components/ui/table/header-table.tsx'
-import { DecksResponse, modalActions, useAppDispatch } from '../../../services'
-import { ResponseUserType } from '../../../services/auth/types.ts'
+import { DecksResponse, modalActions, useAppDispatch, ResponseUserType } from '../../../services'
 
 import s from './table-packs-list.module.scss'
 
@@ -45,7 +44,7 @@ const columns: Array<Column> = [
 
 type PropsType = {
   data: DecksResponse | undefined
-  authData: ResponseUserType | undefined
+  authData?: ResponseUserType | null
   setIsMyPackHandler: (isMyPack: boolean) => void
   setCardId: (cardId: string) => void
   sort: Sort

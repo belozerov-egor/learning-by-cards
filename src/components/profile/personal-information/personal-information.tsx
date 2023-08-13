@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import { FC, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
 import { z } from 'zod'
 
-import { AvatarInCard, Edit, Logout } from '../../../common'
+import { Edit, Logout } from '../../../common'
 import { Button, Card, ControlledTextField, Typography } from '../../ui'
+import { AvatarDemo } from '../../ui/avatar'
 
 import s from './personalInformation.module.scss'
 
@@ -14,12 +16,20 @@ const sigInSchema = z.object({
 })
 
 type SignInFormShem = z.infer<typeof sigInSchema>
-export const PersonalInformation = () => {
+
+type PropsType = {
+  name: string
+  email: string
+  avatar?: string
+}
+
+export const PersonalInformation: FC<PropsType> = ({ name, email, avatar }) => {
   const [editMode, setEditMode] = useState<boolean>(false)
   const { control, handleSubmit } = useForm<SignInFormShem>({
     resolver: zodResolver(sigInSchema),
   })
   const onSubmit = (data: SignInFormShem) => {
+    // eslint-disable-next-line no-console
     console.log(data)
   }
 
@@ -30,7 +40,7 @@ export const PersonalInformation = () => {
       </Typography>
       <div className={s.avatarBlock}>
         <div className={s.avatar}>
-          <AvatarInCard />
+          <AvatarDemo src={avatar} name={name} className={s.avatar} />
           {!editMode && (
             <div className={s.avatarEdit}>
               <Edit />
@@ -43,6 +53,7 @@ export const PersonalInformation = () => {
           <ControlledTextField
             name={'nickName'}
             label={'Nickname'}
+            defaultValue={name}
             type={'default'}
             control={control}
             className={s.editNickName}
@@ -61,14 +72,14 @@ export const PersonalInformation = () => {
         <div className={s.infoBlock}>
           <div className={s.nameBlock}>
             <Typography variant={'h1'} className={s.name}>
-              Ivan
+              {name}
             </Typography>
-            <Edit onClick={() => setEditMode(true)} />
+            <Edit className={s.changeName} onClick={() => setEditMode(true)} />
           </div>
           <Typography variant={'body2'} as={'span'} className={s.email}>
-            j&johnson@gmail.com
+            {email}
           </Typography>
-          <Button variant={'secondary'} className={s.logout}>
+          <Button as={Link} to="/sign-up" variant={'secondary'} className={s.logout}>
             <Logout />
             <Typography variant={'subtitle2'}>Logout</Typography>
           </Button>

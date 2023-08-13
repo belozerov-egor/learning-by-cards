@@ -6,8 +6,8 @@ import {
   RouterProvider,
 } from 'react-router-dom'
 
-import { Layout } from './components'
-import { PacksList, MyPack, FriendsPack, Login, LearnPack } from './page'
+import { CheckEmail, CreateNewPassword, ForgotPassword, SignUp, Layout } from './components'
+import { FriendsPack, LearnPack, Login, MyPack, PacksList } from './page'
 import { EmptyPack } from './page/empty-pack'
 import { useMeQuery } from './services'
 
@@ -16,6 +16,22 @@ const publicRoutes: RouteObject[] = [
     path: '/login',
     element: <Login />,
   },
+  {
+    path: '/sign-up',
+    element: <SignUp />,
+  },
+  {
+    path: '/forgot-password',
+    element: <ForgotPassword />,
+  },
+  {
+    path: '/recover-password/:token',
+    element: <CreateNewPassword />,
+  },
+  {
+    path: '/check-email/:email',
+    element: <CheckEmail />,
+  },
 ]
 
 const privateRoutes: RouteObject[] = [
@@ -23,7 +39,6 @@ const privateRoutes: RouteObject[] = [
     path: '/',
     element: <PacksList />,
   },
-
   {
     path: '/my-pack/:id',
     element: <MyPack />,
@@ -60,7 +75,7 @@ function PrivateRoutes() {
 
   if (isLoading) return <div>...Loading</div>
 
-  return data ? <Outlet /> : <Navigate to={'/login'} />
+  return data ? <Outlet /> : <Navigate to="/login" />
 }
 
 export const Router = () => {

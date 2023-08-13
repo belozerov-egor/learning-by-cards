@@ -22,8 +22,9 @@ import {
   useGetDecksQuery,
   useMeQuery,
   useUpdateDeckMutation,
+  cardsSlice,
+  NameModal,
 } from '../../services'
-import { cardsSlice } from '../../services/cards'
 
 import { usePackDeckState } from './hook'
 import { TablePacksList } from './pack-table'
@@ -77,22 +78,16 @@ export const PacksList = () => {
   const setSearchByName = (event: string) => {
     dispatch(deckSlice.actions.setSearchByName(event))
   }
-  const onHandlerActionClicked = () => {
+  const onHandlerActionClicked = (value: NameModal) => {
     if (addPack) {
       createDeck({ name: packName, isPrivate: privatePack })
-      dispatch(modalActions.setCloseModal('addPack'))
-      dispatch(modalActions.setPackName(''))
-      dispatch(modalActions.setPrivatePack(false))
     } else if (editPack) {
       editDeck({ id: cardId, name: packName, isPrivate: privatePack })
-      dispatch(modalActions.setCloseModal('editPack'))
-      dispatch(modalActions.setPackName(''))
-      dispatch(modalActions.setPrivatePack(false))
     } else if (deletePack) {
       deleteDeck({ id: cardId })
-      dispatch(modalActions.setCloseModal('deletePack'))
-      dispatch(modalActions.setPackName(''))
     }
+    dispatch(modalActions.setCloseModal(value))
+    dispatch(modalActions.setClearState({}))
   }
   const setIsMyPackHandler = (value: boolean) => {
     dispatch(cardsSlice.actions.setIsMyPack({ isMyPack: value }))
