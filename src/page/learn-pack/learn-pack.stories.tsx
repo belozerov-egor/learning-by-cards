@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import {
   BrowserRouterDecorator,
   ReduxStoreProviderDecorator,
-} from '../../../common/utils/decorators.tsx'
+} from '../../common/utils/decorators.tsx'
 
 import { LearnPack } from './learn-pack.tsx'
 

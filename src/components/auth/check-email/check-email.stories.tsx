@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { BrowserRouterDecorator } from '../../../common/utils/decorators.tsx'
+import { BrowserRouterDecorator } from '../../../common'
 
 import { CheckEmail } from './check-email.tsx'
 
