@@ -1,9 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import {
-  BrowserRouterDecorator,
-  ReduxStoreProviderDecorator,
-} from '../../../common/utils/decorators.tsx'
+import { BrowserRouterDecorator, ReduxStoreProviderDecorator } from '../../../common'
 
 import { Header } from './'
 
