@@ -5,6 +5,7 @@ import {
   Pagination,
   SelectDemo,
   SliderDemo,
+  TableModal,
   TabSwitcher,
   TextField,
   Typography,
@@ -13,6 +14,7 @@ import {
   deckSlice,
   modalActions,
   selectOpenModals,
+  selectSettings,
   useAppDispatch,
   useAppSelector,
   useCreateDeckMutation,
@@ -20,7 +22,6 @@ import {
   useGetDecksQuery,
   useMeQuery,
   useUpdateDeckMutation,
-  TableModal,
 } from '../../services'
 import { cardsSlice } from '../../services/cards'
 
@@ -37,6 +38,7 @@ export const PacksList = () => {
   const currentPage = useAppSelector(state => state.deckSlice.currentPage)
 
   const { addPack, editPack, deletePack } = useAppSelector(selectOpenModals)
+  const { privatePack, packName } = useAppSelector(selectSettings)
 
   const dispatch = useAppDispatch()
 
@@ -75,15 +77,17 @@ export const PacksList = () => {
   const setSearchByName = (event: string) => {
     dispatch(deckSlice.actions.setSearchByName(event))
   }
-  const onHandlerActionClicked = (packName: string) => {
+  const onHandlerActionClicked = () => {
     if (addPack) {
-      createDeck({ name: packName })
+      createDeck({ name: packName, isPrivate: privatePack })
       dispatch(modalActions.setCloseModal('addPack'))
       dispatch(modalActions.setPackName(''))
+      dispatch(modalActions.setPrivatePack(false))
     } else if (editPack) {
-      editDeck({ id: cardId, name: packName })
+      editDeck({ id: cardId, name: packName, isPrivate: privatePack })
       dispatch(modalActions.setCloseModal('editPack'))
       dispatch(modalActions.setPackName(''))
+      dispatch(modalActions.setPrivatePack(false))
     } else if (deletePack) {
       deleteDeck({ id: cardId })
       dispatch(modalActions.setCloseModal('deletePack'))
@@ -173,7 +177,7 @@ export const PacksList = () => {
         />
         <Typography variant={'body2'}>На странице</Typography>
       </div>
-      <TableModal handleClicked={packName => onHandlerActionClicked(packName)} />
+      <TableModal handleClicked={onHandlerActionClicked} />
     </div>
   )
 }

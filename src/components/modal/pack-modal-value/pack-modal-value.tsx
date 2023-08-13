@@ -1,7 +1,5 @@
-import { CheckBox, TextField } from '../../../components'
-import { useAppDispatch, useAppSelector } from '../../store.ts'
-import { modalActions } from '../modal.slice.ts'
-import { selectSettings } from '../selectors.ts'
+import { modalActions, selectSettings, useAppDispatch, useAppSelector } from '../../../services'
+import { CheckBox, TextField } from '../../ui'
 
 export const PackModalValue = () => {
   const { packName, privatePack } = useAppSelector(selectSettings)

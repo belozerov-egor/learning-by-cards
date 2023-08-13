@@ -1,6 +1,3 @@
 export * from './modal.slice.ts'
 export * from './types.ts'
 export * from './selectors.ts'
-export * from './pack-modal-value'
-export * from './card-modal-value'
-export * from './table-modal'

@@ -1,21 +1,21 @@
 import { FC } from 'react'
 
-import { Modal, Typography } from '../../../components'
 import {
-  CardModalValue,
   modalActions,
   NameModal,
-  PackModalValue,
   selectOpenModals,
   selectSettings,
   useAppDispatch,
   useAppSelector,
 } from '../../../services'
+import { Modal, Typography } from '../../ui'
+import { CardModalValue } from '../card-modal-value'
+import { PackModalValue } from '../pack-modal-value'
 
 import s from './table-modal.module.scss'
 
 type PropsType = {
-  handleClicked: (packName: string) => void
+  handleClicked: () => void
 }
 
 export const TableModal: FC<PropsType> = props => {
@@ -28,7 +28,7 @@ export const TableModal: FC<PropsType> = props => {
 
   const setClose = (value: NameModal) => {
     dispatch(modalActions.setCloseModal(value))
-    dispatch(modalActions.setPackName(''))
+    dispatch(modalActions.setClearState())
   }
 
   let onCloseHandler
@@ -53,8 +53,8 @@ export const TableModal: FC<PropsType> = props => {
       break
     case addCard:
       onCloseHandler = () => setClose('addCard')
-      title = 'Delete Card'
-      titleButton = 'Delete Card'
+      title = 'Add Card'
+      titleButton = 'Add Card'
       break
     case editCard:
       onCloseHandler = () => setClose('editCard')
@@ -76,10 +76,10 @@ export const TableModal: FC<PropsType> = props => {
     <Modal
       title={title}
       showCloseButton={true}
-      open={addPack || editPack || deletePack}
+      open={addPack || editPack || deletePack || addCard || editCard || deleteCard}
       onClose={onCloseHandler}
       titleButton={titleButton}
-      callBack={() => handleClicked(packName)}
+      callBack={handleClicked}
     >
       {deleteCard || deletePack ? (
         <Typography variant={'body1'}>

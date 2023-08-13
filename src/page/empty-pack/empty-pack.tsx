@@ -1,24 +1,34 @@
-import { FC, useState } from 'react'
-
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { Back } from '../../common'
-import { Button, Modal, TextField, Typography } from '../../components'
-import { useCreateCardMutation } from '../../services/decks'
+import { Button, TableModal, Typography } from '../../components'
+import {
+  modalActions,
+  selectSettings,
+  useAppDispatch,
+  useAppSelector,
+  useCreateCardMutation,
+} from '../../services'
 
 import s from './empty-pack.module.scss'
 
 export const EmptyPack = () => {
-  const [question, setQuestion] = useState<string>('')
-  const [answer, setAnswer] = useState<string>('')
-  const [open, setOpen] = useState<boolean>(false)
   const [createCard] = useCreateCardMutation()
   const navigate = useNavigate()
   const params = useParams()
+  const { question, answer } = useAppSelector(selectSettings)
+  const dispatch = useAppDispatch()
+
+  const setOpen = () => {
+    dispatch(modalActions.setOpenModal('addCard'))
+  }
 
   const addCardHandler = () => {
     createCard({ id: params.id, question, answer })
     navigate(`/my-pack/${params.id}`)
+    dispatch(modalActions.setCloseModal('addCard'))
+    dispatch(modalActions.setQuestion(''))
+    dispatch(modalActions.setAnswer(''))
   }
 
   return (
@@ -34,34 +44,11 @@ export const EmptyPack = () => {
         This pack is empty. Click add new card to fill this pack
       </Typography>
       <div className={s.addNewPackButton}>
-        <Button variant={'primary'} onClick={() => setOpen(true)}>
+        <Button variant={'primary'} onClick={setOpen}>
           Add New Card
         </Button>
       </div>
-      <Modal
-        title={'Add New Card'}
-        open={open}
-        onClose={() => setOpen(false)}
-        titleButton={'Add New Card'}
-        showCloseButton={true}
-        callBack={addCardHandler}
-        disableButton={false}
-      >
-        <TextField
-          type={'default'}
-          value={question}
-          label={'Question'}
-          placeholder={'Question'}
-          onChangeText={e => setQuestion(e)}
-        />
-        <TextField
-          type={'default'}
-          value={answer}
-          label={'Answer'}
-          placeholder={'Answer'}
-          onChangeText={e => setAnswer(e)}
-        />
-      </Modal>
+      <TableModal handleClicked={addCardHandler} />
     </div>
   )
 }

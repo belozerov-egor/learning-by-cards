@@ -23,18 +23,18 @@ const decksApi = baseApi.injectEndpoints({
         providesTags: ['Decks'],
       }),
       createDeck: builder.mutation<any, any>({
-        query: ({ name }) => ({
+        query: ({ name, isPrivate }) => ({
           url: 'v1/decks',
           method: 'POST',
-          body: { name },
+          body: { name, isPrivate },
         }),
         invalidatesTags: ['Decks'],
       }),
-      updateDeck: builder.mutation<any, { id: string; name: string }>({
-        query: ({ id, name }) => ({
+      updateDeck: builder.mutation<any, { id: string; name: string; isPrivate: boolean }>({
+        query: ({ id, name, isPrivate }) => ({
           url: `v1/decks/${id}`,
           method: 'PATCH',
-          body: { name },
+          body: { name, isPrivate },
         }),
         invalidatesTags: ['Decks'],
       }),

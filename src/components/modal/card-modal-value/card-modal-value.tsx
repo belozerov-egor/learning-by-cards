@@ -1,7 +1,5 @@
-import { TextField } from '../../../components'
-import { useAppDispatch, useAppSelector } from '../../store.ts'
-import { modalActions } from '../modal.slice.ts'
-import { selectSettings } from '../selectors.ts'
+import { modalActions, selectSettings, useAppDispatch, useAppSelector } from '../../../services'
+import { TextField } from '../../ui'
 
 export const CardModalValue = () => {
   const { question, answer } = useAppSelector(selectSettings)
@@ -18,15 +16,15 @@ export const CardModalValue = () => {
       <TextField
         type={'default'}
         value={question}
-        label={'Name Pack'}
-        placeholder={'name'}
+        label={'Question'}
+        placeholder={'Question'}
         onChangeText={e => setQuestion(e)}
       />
       <TextField
         type={'default'}
         value={answer}
-        label={'Name Pack'}
-        placeholder={'name'}
+        label={'Answer'}
+        placeholder={'Answer'}
         onChangeText={e => setAnswer(e)}
       />
     </>
