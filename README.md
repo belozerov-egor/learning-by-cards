@@ -16,6 +16,8 @@
 а потом запустите проект:
 ### `pnpm dev`
 
+для теста password: test@test,
+          email: belozerov-egor@test.com
 
 <hr>
 To learn React, check out the [React documentation](https://reactjs.org/).
