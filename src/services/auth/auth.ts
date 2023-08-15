@@ -78,6 +78,22 @@ const authApi = baseApi.injectEndpoints({
         }),
         invalidatesTags: ['Me'],
       }),
+      updateProfile: builder.mutation<ResponseUserType, FormData>({
+        query: body => ({
+          url: 'v1/auth/me',
+          method: 'PATCH',
+          body: body,
+        }),
+        invalidatesTags: ['Me'],
+      }),
+      resendVerificationEmail: builder.mutation<void, { userId: string; html: string }>({
+        query: ({ userId, html }) => ({
+          url: 'v1/auth/resend-verification-email',
+          method: 'POST',
+          body: { userId, html },
+        }),
+        invalidatesTags: ['Me'],
+      }),
     }
   },
 })
@@ -89,25 +105,6 @@ export const {
   useSignUpMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
+  useUpdateProfileMutation,
+  useResendVerificationEmailMutation,
 } = authApi
-
-/*
-async onQueryStarted(_, { dispatch, queryFulfilled }) {
-  const patchResult = dispatch(
-      authApi.util.updateQueryData('me', undefined, () => {
-        return null
-      })
-  )
-
-  try {
-    await queryFulfilled
-  } catch {
-    patchResult.undo()
-
-    /!**
-     * Alternatively, on failure you can invalidate the corresponding cache tags
-     * to trigger a re-fetch:
-     * dispatch(api.util.invalidateTags(['Post']))
-     *!/
-  }
-},*/

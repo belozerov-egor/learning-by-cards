@@ -1,7 +1,8 @@
 import { Outlet } from 'react-router-dom'
+import 'react-toastify/dist/ReactToastify.css'
 
 import { useMeQuery } from '../../services'
-import { Header } from '../ui'
+import { Header, GlobalToast } from '../ui'
 
 export const Layout = () => {
   const { data } = useMeQuery()
@@ -9,6 +10,7 @@ export const Layout = () => {
   return (
     <>
       <Header data={data} />
+      <GlobalToast />
       <Outlet />
     </>
   )

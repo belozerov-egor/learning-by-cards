@@ -1,5 +1,5 @@
-.packListBlock {
-  width: 80rem;
+.friendsPackBlock {
+  max-width: 80rem;
   margin: 0 auto;
   padding-top: 2.06rem;
 
@@ -18,23 +18,46 @@
 
   .headBlock {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
+
     margin-bottom: 1.5rem;
   }
 
   .titleMenu {
     display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
-    align-items: end;
+    align-items: center;
+
     text-align: center;
   }
 
   .textField {
     margin-bottom: 1.5rem;
   }
+
+  .pagination {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    margin-top: 1rem;
+
+    .selectPagination {
+      width: 70px;
+    }
+  }
 }
 
 .buttonDrop {
   padding: 0;
+  color: var(--color-light-100);
+
+  &:focus,
+  &:active,
+  &:hover {
+    color: var(--color-light-100);
+    outline: none;
+  }
 }

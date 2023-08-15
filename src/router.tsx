@@ -6,7 +6,15 @@ import {
   RouterProvider,
 } from 'react-router-dom'
 
-import { CheckEmail, CreateNewPassword, ForgotPassword, SignUp, Layout } from './components'
+import {
+  CheckEmail,
+  CreateNewPassword,
+  ForgotPassword,
+  SignUp,
+  Layout,
+  Loader,
+  Profile,
+} from './components'
 import { FriendsPack, LearnPack, Login, MyPack, PacksList } from './page'
 import { EmptyPack } from './page/empty-pack'
 import { useMeQuery } from './services'
@@ -55,6 +63,10 @@ const privateRoutes: RouteObject[] = [
     path: '/learn-pack/:id',
     element: <LearnPack />,
   },
+  {
+    path: '/profile',
+    element: <Profile />,
+  },
 ]
 
 const router = createBrowserRouter([
@@ -73,7 +85,7 @@ const router = createBrowserRouter([
 function PrivateRoutes() {
   const { data, isLoading } = useMeQuery()
 
-  if (isLoading) return <div>...Loading</div>
+  if (isLoading) return <Loader />
 
   return data ? <Outlet /> : <Navigate to="/login" />
 }

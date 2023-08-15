@@ -1,6 +1,6 @@
 import { baseApi } from '../base-api.ts'
 
-import { Deck, DecksResponse, LearnDeckResponse } from './types.ts'
+import { Deck, DecksResponse, GetDecksArgs, LearnDeckResponse } from './types.ts'
 
 const decksApi = baseApi.injectEndpoints({
   endpoints: builder => {
@@ -68,7 +68,7 @@ const decksApi = baseApi.injectEndpoints({
             params: { previousCardId },
           }
         },
-        providesTags: ['Decks'],
+        providesTags: ['Cards'],
       }),
       updateGradeCard: builder.mutation<
         LearnDeckResponse,
@@ -79,21 +79,11 @@ const decksApi = baseApi.injectEndpoints({
           method: 'POST',
           body: { cardId, grade },
         }),
-        invalidatesTags: ['Decks'],
+        invalidatesTags: ['Cards'],
       }),
     }
   },
 })
-
-type GetDecksArgs = {
-  minCardsCount?: number
-  maxCardsCount?: number
-  name?: string
-  authorId?: string
-  orderBy: string | null
-  currentPage?: number
-  itemsPerPage?: number
-}
 
 export const {
   useGetDecksQuery,

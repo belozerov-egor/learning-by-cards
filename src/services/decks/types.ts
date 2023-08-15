@@ -1,4 +1,12 @@
-import { Pagination } from '../types'
+import { PaginatedRequest, Pagination } from '../types'
+
+export type GetDecksArgs = PaginatedRequest<{
+  minCardsCount?: number
+  maxCardsCount?: number
+  name?: string
+  authorId?: Author['id']
+  orderBy: string | null
+}>
 
 export type DecksResponse = {
   maxCardsCount: number
