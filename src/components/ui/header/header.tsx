@@ -1,6 +1,7 @@
 import { FC } from 'react'
 
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 import { Logo, Logout, Profile } from '../../../common'
 import { ResponseUserType, useLogoutMutation } from '../../../services'
@@ -20,6 +21,9 @@ export const Header: FC<HeaderProps> = ({ data }) => {
 
   const logoutHandler = () => {
     logout()
+      .unwrap()
+      .then(() => toast.success('Всего хорошего'))
+      .catch(() => toast.error('Что-то пошло не так'))
   }
 
   const dropDownMenu = [

@@ -28,14 +28,36 @@
   .titleMenu {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
-    align-items: end;
-
-    text-align: center;
+    align-items: center;
   }
 
   .textField {
     margin-bottom: 1.5rem;
+  }
+
+  .icons {
+    display: flex;
+    gap: 0.62rem;
+    justify-content: end;
+
+    .icon {
+      transition: transform 0.2s ease-in-out;
+
+      &:hover {
+        transform: scale(1.2);
+      }
+    }
+  }
+
+  .pagination {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    margin-top: 1rem;
+
+    .selectPagination {
+      width: 70px;
+    }
   }
 }
 

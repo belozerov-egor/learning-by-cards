@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 
 import { Navigate, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 import { SignIn } from '../../components'
 import { useLoginMutation, useMeQuery } from '../../services'
@@ -14,7 +15,11 @@ export const Login = () => {
     login(data)
       .unwrap()
       .then(() => {
+        toast.success('Успешный вход')
         navigate('/')
+      })
+      .catch(error => {
+        toast.error(error.data.message)
       })
   }
 
