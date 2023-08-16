@@ -10,11 +10,12 @@ import {
   CheckEmail,
   CreateNewPassword,
   ForgotPassword,
-  SignUp,
   Layout,
   Loader,
   Profile,
+  SignUp,
 } from './components'
+import { ConfirmationEmail } from './components/confirmation-email/confirmation-email.tsx'
 import { FriendsPack, LearnPack, Login, MyPack, PacksList } from './page'
 import { EmptyPack } from './page/empty-pack'
 import { useMeQuery } from './services'
@@ -39,6 +40,10 @@ const publicRoutes: RouteObject[] = [
   {
     path: '/check-email/:email',
     element: <CheckEmail />,
+  },
+  {
+    path: '/confirm-email/:code',
+    element: <ConfirmationEmail />,
   },
 ]
 

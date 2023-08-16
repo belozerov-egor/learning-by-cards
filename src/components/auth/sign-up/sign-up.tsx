@@ -2,6 +2,7 @@ import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 import { useSignUpMutation } from '../../../services'
@@ -33,11 +34,10 @@ export const SignUp = () => {
     signUp({ email: data.email, password: data.password, sendConfirmationEmail: false })
       .unwrap()
       .then(() => {
-        navigate('/login')
+        navigate(`/check-email/${data.email}`)
       })
       .catch(err => {
-        // eslint-disable-next-line no-console
-        console.log(err)
+        toast.error(err.data.message)
       })
   }
 

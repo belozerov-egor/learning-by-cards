@@ -13,9 +13,16 @@
 }
 
 .nameOfDeckButton {
+  display: flex;
+  justify-content: flex-start;
   padding: 0;
 
   &:focus {
     outline: none;
+  }
+
+  .nameImg {
+    width: 10%;
+    height: 10%;
   }
 }
