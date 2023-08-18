@@ -38,16 +38,13 @@ const decksApi = baseApi.injectEndpoints({
         }),
         invalidatesTags: ['Decks'],
       }),
-      createCard: builder.mutation<
-        any,
-        { id: string | undefined; question: string; answer: string }
-      >({
-        query: ({ id, ...args }) => ({
+      createCard: builder.mutation<any, any>({
+        query: ({ id, formData }) => ({
           url: `v1/decks/${id}/cards`,
           method: 'POST',
-          body: { ...args },
+          body: formData,
         }),
-        invalidatesTags: ['Cards'],
+        invalidatesTags: ['Cards', 'Decks'],
       }),
 
       deletedDeck: builder.mutation<any, any>({

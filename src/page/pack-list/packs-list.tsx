@@ -3,6 +3,7 @@ import useDebounce from '../../common/hooks/use-debounce.ts'
 import {
   AddEditPackModal,
   Button,
+  DeletePackCardModal,
   Pagination,
   SelectDemo,
   SliderDemo,
@@ -10,13 +11,12 @@ import {
   TextField,
   Typography,
 } from '../../components'
-import { DeletePackCardModal } from '../../components/modal/delete-modal/delete-pack-card-modal.tsx'
 import {
   cardsSlice,
   deckSlice,
   modalActions,
   selectOpen,
-  selectSettings,
+  selectPackSettings,
   useAppDispatch,
   useAppSelector,
   useCreateDeckMutation,
@@ -38,7 +38,7 @@ export const PacksList = () => {
   const options = useAppSelector(state => state.deckSlice.paginationOptions)
   const currentPage = useAppSelector(state => state.deckSlice.currentPage)
   const open = useAppSelector(selectOpen)
-  const { privatePack, packName, img } = useAppSelector(selectSettings)
+  const { privatePack, packName, img } = useAppSelector(selectPackSettings)
 
   const dispatch = useAppDispatch()
 

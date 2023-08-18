@@ -1,10 +1,10 @@
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { Back } from '../../common'
-import { Button, AddEditPackModal, Typography } from '../../components'
+import { AddEditCardModal, Button, Typography } from '../../components'
 import {
   modalActions,
-  selectSettings,
+  selectCardSettings,
   useAppDispatch,
   useAppSelector,
   useCreateCardMutation,
@@ -16,7 +16,7 @@ export const EmptyPack = () => {
   const [createCard] = useCreateCardMutation()
   const navigate = useNavigate()
   const params = useParams()
-  const { question, answer } = useAppSelector(selectSettings)
+  const { question, answer, questionImg, answerImg } = useAppSelector(selectCardSettings)
   const dispatch = useAppDispatch()
 
   const setOpen = () => {
@@ -24,7 +24,14 @@ export const EmptyPack = () => {
   }
 
   const addCardHandler = () => {
-    createCard({ id: params.id, question, answer })
+    const formData = new FormData()
+
+    formData.append('question', question)
+    formData.append('answer', answer)
+
+    questionImg && formData.append('questionImg', questionImg)
+    answerImg && formData.append('answerImg', answerImg)
+    createCard({ id: params.id, formData })
     navigate(`/my-pack/${params.id}`)
     dispatch(modalActions.setCloseModal('addCard'))
     dispatch(modalActions.setQuestion(''))
@@ -48,7 +55,7 @@ export const EmptyPack = () => {
           Add New Card
         </Button>
       </div>
-      <AddEditPackModal onSubmit={addCardHandler} />
+      <AddEditCardModal onSubmit={addCardHandler} />
     </div>
   )
 }

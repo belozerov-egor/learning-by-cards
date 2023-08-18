@@ -2,8 +2,9 @@ import { FC } from 'react'
 
 import {
   modalActions,
+  selectCardSettings,
   selectOpen,
-  selectSettings,
+  selectPackSettings,
   useAppDispatch,
   useAppSelector,
 } from '../../../services'
@@ -16,7 +17,8 @@ type PropsType = {
 }
 export const DeletePackCardModal: FC<PropsType> = ({ onSubmit }) => {
   const open = useAppSelector(selectOpen)
-  const { packName, question } = useAppSelector(selectSettings)
+  const { packName } = useAppSelector(selectPackSettings)
+  const { question } = useAppSelector(selectCardSettings)
   const dispatch = useAppDispatch()
 
   const setClose = () => {

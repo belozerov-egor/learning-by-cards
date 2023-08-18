@@ -49,10 +49,18 @@ const columns: Array<Column> = [
 
 export const MyPackTable: FC<PropsType> = ({ dataCards, setCardId, sort, setSort }) => {
   const dispatch = useAppDispatch()
-  const onEditHandler = (question: string, answer: string, cardId: string) => {
+  const onEditHandler = (
+    question: string,
+    answer: string,
+    cardId: string,
+    questionImg: string | undefined,
+    answerImg: string | undefined
+  ) => {
     dispatch(modalActions.setOpenModal('editCard'))
     dispatch(modalActions.setQuestion(question))
     dispatch(modalActions.setAnswer(answer))
+    dispatch(modalActions.setQuestionEditImg(questionImg))
+    dispatch(modalActions.setAnswerEditImg(answerImg))
     setCardId(cardId)
   }
 
@@ -79,7 +87,11 @@ export const MyPackTable: FC<PropsType> = ({ dataCards, setCardId, sort, setSort
               </TableElement.Cell>
               <TableElement.Cell>
                 <div className={s.icons}>
-                  <Edit onClick={() => onEditHandler(el.question, el.answer, el.id)} />
+                  <Edit
+                    onClick={() =>
+                      onEditHandler(el.question, el.answer, el.id, el.questionImg, el.answerImg)
+                    }
+                  />
                   <Trash onClick={() => onDeleteHandler(el.question, el.id)} />
                 </div>
               </TableElement.Cell>

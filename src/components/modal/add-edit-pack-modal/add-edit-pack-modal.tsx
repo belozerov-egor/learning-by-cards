@@ -1,11 +1,11 @@
 import { ChangeEvent, FC } from 'react'
 
-import { ChangeImgDeck } from '../../../common/assets/img/changeImgDeck.tsx'
+import { ChangeImgDeck } from '../../../common'
 import imgDeck from '../../../common/assets/img/imgDeck.jpg'
 import {
   modalActions,
   selectOpen,
-  selectSettings,
+  selectPackSettings,
   useAppDispatch,
   useAppSelector,
 } from '../../../services'
@@ -20,7 +20,7 @@ type PropsType = {
 export const AddEditPackModal: FC<PropsType> = props => {
   const { onSubmit } = props
   const open = useAppSelector(selectOpen)
-  const { packName, privatePack, img, editImg } = useAppSelector(selectSettings)
+  const { packName, privatePack, img, editImg } = useAppSelector(selectPackSettings)
   const dispatch = useAppDispatch()
 
   const setClose = () => {

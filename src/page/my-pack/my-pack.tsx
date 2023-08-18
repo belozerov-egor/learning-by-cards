@@ -5,23 +5,24 @@ import { toast } from 'react-toastify'
 
 import { Back, Edit, Play, SubMenu, Trash } from '../../common'
 import {
+  AddEditCardModal,
+  AddEditPackModal,
   Button,
+  DeletePackCardModal,
   DropDownMenuDemo,
   Loader,
   Pagination,
   SelectDemo,
   Sort,
-  AddEditPackModal,
   TextField,
   Typography,
-  CardAddEditModal,
 } from '../../components'
-import { DeletePackCardModal } from '../../components/modal/delete-modal/delete-pack-card-modal.tsx'
 import {
   modalActions,
   NameModal,
+  selectCardSettings,
   selectOpen,
-  selectSettings,
+  selectPackSettings,
   useAppDispatch,
   useAppSelector,
   useCreateCardMutation,
@@ -40,7 +41,8 @@ export const MyPack = () => {
   const params = useParams<{ id: string }>()
   const navigate = useNavigate()
 
-  const { privatePack, packName, question, answer } = useAppSelector(selectSettings)
+  const { privatePack, packName } = useAppSelector(selectPackSettings)
+  const { question, answer, questionImg, answerImg } = useAppSelector(selectCardSettings)
   const itemsPerPage = useAppSelector(state => state.deckSlice.itemsPerPage)
   const options = useAppSelector(state => state.deckSlice.paginationOptions)
   const currentPage = useAppSelector(state => state.deckSlice.currentPage)
@@ -89,9 +91,23 @@ export const MyPack = () => {
   }
   const addOrEditCard = () => {
     if (open === 'addCard') {
-      createCard({ id: params.id, question, answer })
+      const formData = new FormData()
+
+      formData.append('question', question)
+      formData.append('answer', answer)
+
+      questionImg && formData.append('questionImg', questionImg)
+      answerImg && formData.append('answerImg', answerImg)
+      createCard({ id: params.id, formData })
     } else if (open === 'editCard') {
-      editItem({ id: cardId, question, answer })
+      const formData = new FormData()
+
+      formData.append('question', question)
+      formData.append('answer', answer)
+
+      questionImg && formData.append('questionImg', questionImg)
+      answerImg && formData.append('answerImg', answerImg)
+      editItem({ id: cardId, formData })
         .unwrap()
         .then(() => toast.success('Карточка успешна обновлена'))
         .catch(() => {
@@ -201,7 +217,7 @@ export const MyPack = () => {
         className={s.textField}
       />
       <MyPackTable dataCards={dataCards} sort={sort} setSort={setSort} setCardId={setCardId} />
-      <CardAddEditModal onSubmit={addOrEditCard} />
+      <AddEditCardModal onSubmit={addOrEditCard} />
       <AddEditPackModal onSubmit={editPack} />
       <DeletePackCardModal onSubmit={deleteCardOrPack} />
       <div className={s.pagination}>

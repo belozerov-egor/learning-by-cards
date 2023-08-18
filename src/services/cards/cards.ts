@@ -14,10 +14,10 @@ const cardsApi = baseApi.injectEndpoints({
         providesTags: ['Cards'],
       }),
       editCard: builder.mutation<any, CreateEditArguments>({
-        query: ({ id, ...args }) => ({
+        query: ({ id, formData }) => ({
           url: `v1/cards/${id}`,
           method: 'PATCH',
-          body: { ...args },
+          body: formData,
         }),
         invalidatesTags: ['Cards'],
       }),
