@@ -1,0 +1,58 @@
+import { FC } from 'react'
+
+import {
+  modalActions,
+  selectOpen,
+  selectSettings,
+  useAppDispatch,
+  useAppSelector,
+} from '../../../services'
+import { Modal, Typography } from '../../ui'
+
+import s from './delete-pack-card-modal.module.scss'
+
+type PropsType = {
+  onSubmit: () => void
+}
+export const DeletePackCardModal: FC<PropsType> = ({ onSubmit }) => {
+  const open = useAppSelector(selectOpen)
+  const { packName, question } = useAppSelector(selectSettings)
+  const dispatch = useAppDispatch()
+
+  const setClose = () => {
+    dispatch(modalActions.setCloseModal({}))
+  }
+  let openModal
+  let titleButton
+  let title
+
+  if (open === 'deletePack') {
+    openModal = open === 'deletePack'
+    titleButton = 'Delete Pack'
+    title = 'Delete Pack'
+  } else if (open === 'deleteCard') {
+    openModal = open === 'deleteCard'
+    titleButton = 'Delete Card'
+    title = 'Delete Card'
+  }
+
+  return (
+    <Modal
+      title={title}
+      titleButton={titleButton}
+      open={openModal}
+      onClose={setClose}
+      showCloseButton={true}
+      callBack={onSubmit}
+    >
+      <Typography variant={'body1'}>
+        Do you really want to remove{' '}
+        <Typography variant={'subtitle1'} className={s.packName}>
+          {open === 'deletePack' ? packName : question}?
+        </Typography>
+        <br />
+        All cards will be deleted.
+      </Typography>
+    </Modal>
+  )
+}

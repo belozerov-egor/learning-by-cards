@@ -1,19 +1,21 @@
 import { Trash } from '../../common'
 import useDebounce from '../../common/hooks/use-debounce.ts'
 import {
+  AddEditPackModal,
   Button,
   Pagination,
   SelectDemo,
   SliderDemo,
-  TableModal,
   TabSwitcher,
   TextField,
   Typography,
 } from '../../components'
+import { DeletePackCardModal } from '../../components/modal/delete-modal/delete-pack-card-modal.tsx'
 import {
+  cardsSlice,
   deckSlice,
   modalActions,
-  selectOpenModals,
+  selectOpen,
   selectSettings,
   useAppDispatch,
   useAppSelector,
@@ -22,8 +24,6 @@ import {
   useGetDecksQuery,
   useMeQuery,
   useUpdateDeckMutation,
-  cardsSlice,
-  NameModal,
 } from '../../services'
 
 import { usePackDeckState } from './hook'
@@ -37,9 +37,8 @@ export const PacksList = () => {
   const sliderValues = useAppSelector(state => state.deckSlice.slider)
   const options = useAppSelector(state => state.deckSlice.paginationOptions)
   const currentPage = useAppSelector(state => state.deckSlice.currentPage)
-
-  const { addPack, editPack, deletePack } = useAppSelector(selectOpenModals)
-  const { privatePack, packName } = useAppSelector(selectSettings)
+  const open = useAppSelector(selectOpen)
+  const { privatePack, packName, img } = useAppSelector(selectSettings)
 
   const dispatch = useAppDispatch()
 
@@ -78,17 +77,34 @@ export const PacksList = () => {
   const setSearchByName = (event: string) => {
     dispatch(deckSlice.actions.setSearchByName(event))
   }
-  const onHandlerActionClicked = (value: NameModal) => {
-    if (addPack) {
-      createDeck({ name: packName, isPrivate: privatePack })
-    } else if (editPack) {
-      editDeck({ id: cardId, name: packName, isPrivate: privatePack })
-    } else if (deletePack) {
-      deleteDeck({ id: cardId })
+
+  const addOrEditPack = () => {
+    if (open === 'addPack') {
+      const formData = new FormData()
+
+      formData.append('name', packName)
+      formData.append('isPrivate', String(privatePack))
+
+      img && formData.append('cover', img)
+      createDeck(formData)
+    } else if (open === 'editPack') {
+      const formData = new FormData()
+
+      formData.append('name', packName)
+      formData.append('isPrivate', String(privatePack))
+
+      img && formData.append('cover', img)
+      editDeck({ id: cardId, formData })
     }
-    dispatch(modalActions.setCloseModal(value))
+    dispatch(modalActions.setCloseModal({}))
     dispatch(modalActions.setClearState({}))
   }
+  const deletePack = () => {
+    deleteDeck({ id: cardId })
+    dispatch(modalActions.setCloseModal({}))
+    dispatch(modalActions.setClearState({}))
+  }
+
   const setIsMyPackHandler = (value: boolean) => {
     dispatch(cardsSlice.actions.setIsMyPack({ isMyPack: value }))
   }
@@ -172,7 +188,8 @@ export const PacksList = () => {
         />
         <Typography variant={'body2'}>На странице</Typography>
       </div>
-      <TableModal handleClicked={onHandlerActionClicked} />
+      <AddEditPackModal onSubmit={addOrEditPack} />
+      <DeletePackCardModal onSubmit={deletePack} />
     </div>
   )
 }

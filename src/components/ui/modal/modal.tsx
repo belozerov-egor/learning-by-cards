@@ -16,13 +16,12 @@ import { Typography } from '../typography'
 import s from './modal.module.scss'
 
 type PropsType = {
-  open: boolean
+  open?: boolean
   onClose?: () => void
   showCloseButton?: boolean
   title?: string
-  titleButton: string
+  titleButton?: string
   callBack?: () => void
-  disableButton?: boolean
 } & ComponentProps<'div'>
 
 export const Modal: FC<PropsType> = ({
@@ -33,7 +32,6 @@ export const Modal: FC<PropsType> = ({
   titleButton,
   showCloseButton = true,
   callBack,
-  disableButton,
 }) => {
   function handleModalClosed() {
     onClose?.()
@@ -61,7 +59,7 @@ export const Modal: FC<PropsType> = ({
               <Button onClick={() => onClose?.()} variant={'secondary'}>
                 Cancel
               </Button>
-              <Button variant={'primary'} onClick={callBack} disabled={disableButton}>
+              <Button variant={'primary'} onClick={callBack}>
                 {titleButton}
               </Button>
             </div>

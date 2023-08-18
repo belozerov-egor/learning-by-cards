@@ -1,7 +1,7 @@
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { Back } from '../../common'
-import { Button, TableModal, Typography } from '../../components'
+import { Button, AddEditPackModal, Typography } from '../../components'
 import {
   modalActions,
   selectSettings,
@@ -48,7 +48,7 @@ export const EmptyPack = () => {
           Add New Card
         </Button>
       </div>
-      <TableModal handleClicked={addCardHandler} />
+      <AddEditPackModal onSubmit={addCardHandler} />
     </div>
   )
 }

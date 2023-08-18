@@ -11,14 +11,16 @@ import {
   Pagination,
   SelectDemo,
   Sort,
-  TableModal,
+  AddEditPackModal,
   TextField,
   Typography,
+  CardAddEditModal,
 } from '../../components'
+import { DeletePackCardModal } from '../../components/modal/delete-modal/delete-pack-card-modal.tsx'
 import {
   modalActions,
   NameModal,
-  selectOpenModals,
+  selectOpen,
   selectSettings,
   useAppDispatch,
   useAppSelector,
@@ -42,7 +44,7 @@ export const MyPack = () => {
   const itemsPerPage = useAppSelector(state => state.deckSlice.itemsPerPage)
   const options = useAppSelector(state => state.deckSlice.paginationOptions)
   const currentPage = useAppSelector(state => state.deckSlice.currentPage)
-  const { editPack, deletePack, addCard, editCard, deleteCard } = useAppSelector(selectOpenModals)
+  const open = useAppSelector(selectOpen)
   const dispatch = useAppDispatch()
 
   const [cardId, setCardId] = useState<string>('')
@@ -85,19 +87,25 @@ export const MyPack = () => {
   const addCardModalHandler = () => {
     dispatch(modalActions.setOpenModal('addCard'))
   }
-  const onHandlerActionClicked = (value: NameModal) => {
-    if (addCard) {
+  const addOrEditCard = () => {
+    if (open === 'addCard') {
       createCard({ id: params.id, question, answer })
-    } else if (editCard) {
+    } else if (open === 'editCard') {
       editItem({ id: cardId, question, answer })
         .unwrap()
         .then(() => toast.success('Карточка успешна обновлена'))
         .catch(() => {
           toast.error('Some error')
         })
-    } else if (deleteCard) {
+    }
+    dispatch(modalActions.setCloseModal({}))
+    dispatch(modalActions.setClearState({}))
+  }
+
+  const deleteCardOrPack = () => {
+    if (open === 'deleteCard') {
       deleteItem({ id: cardId })
-    } else if (editPack) {
+    } else if (open === 'editPack') {
       editDeck({ id: cardId, name: packName, isPrivate: privatePack })
         .unwrap()
         .then(() => {
@@ -106,7 +114,7 @@ export const MyPack = () => {
         .catch(() => {
           toast.error('Some error')
         })
-    } else if (deletePack) {
+    } else if (open === 'deletePack') {
       deleteDeck({ id: cardId })
         .unwrap()
         .then(() => {
@@ -118,7 +126,20 @@ export const MyPack = () => {
 
       navigate('/')
     }
-    dispatch(modalActions.setCloseModal(value))
+    dispatch(modalActions.setCloseModal({}))
+    dispatch(modalActions.setClearState({}))
+  }
+
+  const editPack = () => {
+    editDeck({ id: cardId, name: packName, isPrivate: privatePack })
+      .unwrap()
+      .then(() => {
+        toast.success('Колода успешно обновлена')
+      })
+      .catch(() => {
+        toast.error('Some error')
+      })
+    dispatch(modalActions.setCloseModal({}))
     dispatch(modalActions.setClearState({}))
   }
 
@@ -180,7 +201,9 @@ export const MyPack = () => {
         className={s.textField}
       />
       <MyPackTable dataCards={dataCards} sort={sort} setSort={setSort} setCardId={setCardId} />
-      <TableModal handleClicked={onHandlerActionClicked} />
+      <CardAddEditModal onSubmit={addOrEditCard} />
+      <AddEditPackModal onSubmit={editPack} />
+      <DeletePackCardModal onSubmit={deleteCardOrPack} />
       <div className={s.pagination}>
         <Pagination count={dataCards?.pagination.totalPages} page={page} onChange={setPage} />
         <Typography variant={'body2'}>Показать</Typography>

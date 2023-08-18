@@ -4,11 +4,7 @@ import { RootState } from '../store.ts'
 
 const selectModalSlice = (state: RootState) => state.modalSlice
 
-export const selectOpenModals = createSelector(
-  [selectModalSlice],
-  modalSlice => modalSlice.showModal
-)
-
+export const selectOpen = createSelector([selectModalSlice], modalSlice => modalSlice.open)
 export const selectSettings = createSelector(
   [selectModalSlice],
   modalSlice => modalSlice.settingsValue

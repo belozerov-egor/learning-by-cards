@@ -22,7 +22,11 @@
   }
 
   .nameImg {
-    width: 10%;
-    height: 10%;
+    width: 7.4rem;
+
+    img {
+      width: 100%;
+      object-fit: contain;
+    }
   }
 }

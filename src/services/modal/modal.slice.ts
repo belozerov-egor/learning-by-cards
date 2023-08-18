@@ -1,21 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { NameModal } from './types.ts'
+import { ModalType, NameModal } from './types.ts'
 
-const initialState = {
-  showModal: {
-    addPack: false,
-    addCard: false,
-    editPack: false,
-    editCard: false,
-    deletePack: false,
-    deleteCard: false,
-  },
+const initialState: ModalType = {
+  open: '',
   settingsValue: {
     privatePack: false,
     packName: '',
     question: '',
     answer: '',
+    img: null,
+    editImg: '',
   },
 }
 
@@ -24,10 +19,10 @@ export const modalSlice = createSlice({
   initialState,
   reducers: {
     setOpenModal: (state, action: PayloadAction<NameModal>) => {
-      state.showModal[action.payload] = true
+      state.open = action.payload
     },
-    setCloseModal: (state, action: PayloadAction<NameModal>) => {
-      state.showModal[action.payload] = false
+    setCloseModal: (state, _) => {
+      state.open = ''
     },
     setPrivatePack: (state, action: PayloadAction<boolean>) => {
       state.settingsValue.privatePack = action.payload
@@ -41,10 +36,17 @@ export const modalSlice = createSlice({
     setAnswer: (state, action: PayloadAction<string>) => {
       state.settingsValue.answer = action.payload
     },
+    setImg: (state, action: PayloadAction<File>) => {
+      state.settingsValue.img = action.payload
+    },
+    setEditImg: (state, action: PayloadAction<string | null | undefined>) => {
+      state.settingsValue.editImg = action.payload
+    },
     setClearState: (state, _) => {
       state.settingsValue.packName = ''
       state.settingsValue.question = ''
       state.settingsValue.answer = ''
+      state.settingsValue.img = null
       state.settingsValue.privatePack = false
     },
   },
