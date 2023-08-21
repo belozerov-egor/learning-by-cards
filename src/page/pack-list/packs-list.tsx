@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import { Trash } from '../../common'
 import useDebounce from '../../common/hooks/use-debounce.ts'
 import {
@@ -59,7 +61,7 @@ export const PacksList = () => {
     perPage,
     onSetPerPageHandler,
   } = usePackDeckState(sliderValues, currentPage, itemsPerPage)
-
+  const [activeTab, setActiveTab] = useState(tabSwitcherOptions[1].value)
   const { data: meData } = useMeQuery()
   const { data } = useGetDecksQuery({
     name: newInitialName,
@@ -109,6 +111,7 @@ export const PacksList = () => {
     dispatch(cardsSlice.actions.setIsMyPack({ isMyPack: value }))
   }
   const handleTabSort = (value: string) => {
+    setActiveTab(value)
     if (value === 'My Cards') {
       setUserId(meData!.id)
     } else {
@@ -119,6 +122,7 @@ export const PacksList = () => {
   const clearFilterData = () => {
     setSearchByName('')
     handleTabSort('All cards')
+    setActiveTab(tabSwitcherOptions[1].value)
     setValueSlider([sliderValues.minValue, sliderValues.maxValue])
     setSort({ key: 'updated', direction: 'asc' })
   }
@@ -139,6 +143,7 @@ export const PacksList = () => {
         <TextField
           value={initialName}
           type={'searchType'}
+          placeholder={'Type to find...'}
           className={s.textField}
           onChangeText={event => setSearchByName(event)}
           onSearchClear={() => setSearchByName('')}
@@ -151,7 +156,7 @@ export const PacksList = () => {
             onChangeCallback={value => handleTabSort(value)}
             options={tabSwitcherOptions}
             className={s.switcher}
-            defaultValue={tabSwitcherOptions[1].value}
+            activeTab={activeTab}
           />
         </div>
         <div>

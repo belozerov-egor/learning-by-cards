@@ -121,11 +121,9 @@ export const MyPack = () => {
   const deleteCardOrPack = () => {
     if (open === 'deleteCard') {
       deleteItem({ id: cardId })
-    } else if (open === 'editPack') {
-      editDeck({ id: cardId, name: packName, isPrivate: privatePack })
         .unwrap()
         .then(() => {
-          toast.success('Колода успешно обновлена')
+          toast.success('Карточка успешно удалена')
         })
         .catch(() => {
           toast.error('Some error')
@@ -134,7 +132,7 @@ export const MyPack = () => {
       deleteDeck({ id: cardId })
         .unwrap()
         .then(() => {
-          toast.success('Карта успешно удалена')
+          toast.success('Колода успешно удалена')
         })
         .catch(() => {
           toast.error('Some error')

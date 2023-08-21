@@ -60,6 +60,8 @@ export const FriendsPack = () => {
         onChangeText={e => setSearch(e)}
         type={'searchType'}
         className={s.textField}
+        placeholder={'Type to find...'}
+        onSearchClear={() => setSearch('')}
       />
       <FriendsTable sort={sort} setSort={setSort} dataCards={dataCards} />
       <div className={s.pagination}>

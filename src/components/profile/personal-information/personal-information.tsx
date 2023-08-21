@@ -67,6 +67,15 @@ export const PersonalInformation: FC<PropsType> = ({
       .then(() => toast.success('Всего хорошего'))
       .catch(() => toast.error('Что-то пошло не так'))
   }
+  const verifyEmail = () => {
+    resendVerEmail({
+      userId,
+      html: `<h1>Hi, ##name##</h1><p>Click <a href="http://localhost:5173/confirm-email/##token##">here</a> to verify your password</p>`,
+    })
+      .unwrap()
+      .then(() => toast.success(`Сообщение отправлено по адресу ${email}`))
+      .catch(() => toast.error('Some error'))
+  }
 
   return (
     <Card className={s.block}>
@@ -130,22 +139,16 @@ export const PersonalInformation: FC<PropsType> = ({
               }}
             />
           </div>
-          <Typography variant={'body2'} as={'span'} className={s.email}>
-            {email}
-          </Typography>
-          {!isEmailVer && (
-            <Button
-              variant={'primary'}
-              onClick={() =>
-                resendVerEmail({
-                  userId,
-                  html: `<h1>Hi, ##name##</h1><p>Click <a href="http://localhost:5173/confirm-email/##token##">here</a> to recover your password</p>`,
-                })
-              }
-            >
-              ver
-            </Button>
-          )}
+          <div className={s.emailBlock} style={isEmailVer ? { marginBottom: '20px' } : {}}>
+            <Typography variant={'body2'} as={'span'} className={s.email}>
+              {email}
+            </Typography>
+            {!isEmailVer && (
+              <Button className={s.verify} variant={'primary'} onClick={verifyEmail}>
+                Verify email
+              </Button>
+            )}
+          </div>
 
           <Button
             as={Link}
