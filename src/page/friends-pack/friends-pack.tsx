@@ -3,8 +3,22 @@ import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 
 import { Back } from '../../common'
-import { Button, Pagination, SelectDemo, Sort, TextField, Typography } from '../../components'
-import { useAppSelector, useGetCardsQuery, useGetDeckQuery } from '../../services'
+import {
+  Button,
+  Loader,
+  Pagination,
+  SelectDemo,
+  Sort,
+  TextField,
+  Typography,
+} from '../../components'
+import {
+  deckSlice,
+  useAppDispatch,
+  useAppSelector,
+  useGetCardsQuery,
+  useGetDeckQuery,
+} from '../../services'
 
 import s from './friends-pack.module.scss'
 import { FriendsTable } from './friends-table/table-friends-pack.tsx'
@@ -12,18 +26,14 @@ import { FriendsTable } from './friends-table/table-friends-pack.tsx'
 export const FriendsPack = () => {
   const params = useParams<{ id: string }>()
 
-  const itemsPerPage = useAppSelector(state => state.deckSlice.itemsPerPage)
+  const itemsPerPage = useAppSelector(state => state.deckSlice.currentPerPage.friendsPack)
   const options = useAppSelector(state => state.deckSlice.paginationOptions)
-  const currentPage = useAppSelector(state => state.deckSlice.currentPage)
+  const currentPage = useAppSelector(state => state.deckSlice.currentPage.friendsPack)
+  const dispatch = useAppDispatch()
 
   const [search, setSearch] = useState('')
-  const [perPage, setPerPage] = useState({ id: 1, value: itemsPerPage })
-  const [page, setPage] = useState(currentPage)
   const [sort, setSort] = useState<Sort>({ key: 'updated', direction: 'desc' })
 
-  const onSetPerPageHandler = (value: number) => {
-    setPerPage({ ...perPage, value })
-  }
   const sortedString = useMemo(() => {
     if (!sort) return null
 
@@ -33,13 +43,23 @@ export const FriendsPack = () => {
   const { data } = useGetDeckQuery({
     id: params.id,
   })
-  const { data: dataCards } = useGetCardsQuery({
+  const { data: dataCards, isLoading } = useGetCardsQuery({
     id: params.id,
     orderBy: sortedString,
     question: search,
-    itemsPerPage: perPage.value,
-    currentPage: page,
+    itemsPerPage: itemsPerPage.value,
+    currentPage: currentPage,
   })
+
+  const setNewCurrentPage = (page: number) => {
+    dispatch(deckSlice.actions.setCurrentPage({ value: 'friendsPack', newCurrentPage: page }))
+  }
+  const setNewPerPage = (value: number) => {
+    dispatch(deckSlice.actions.setItemsPerPage({ value: 'friendsPack', newCurrentPage: value }))
+  }
+
+  // eslint-disable-next-line react/jsx-no-undef
+  if (isLoading) return <Loader />
 
   return (
     <div className={s.friendsPackBlock}>
@@ -48,8 +68,11 @@ export const FriendsPack = () => {
         Back to Packs List
       </Button>
       <div className={s.headBlock}>
-        <div className={s.titleMenu}>
-          <Typography variant={'large'}>{data?.name}</Typography>
+        <div className={s.titleAndCover}>
+          <div className={s.titleMenu}>
+            <Typography variant={'large'}>{data?.name}</Typography>
+          </div>
+          {data?.cover && <img src={data.cover} alt="cover" className={s.cover} />}
         </div>
         <Button as={Link} to={`/learn-pack/${params.id}`} variant={'primary'}>
           Learn to Pack
@@ -57,20 +80,24 @@ export const FriendsPack = () => {
       </div>
       <TextField
         value={search}
+        placeholder={'Type to find...'}
         onChangeText={e => setSearch(e)}
+        onSearchClear={() => setSearch('')}
         type={'searchType'}
         className={s.textField}
-        placeholder={'Type to find...'}
-        onSearchClear={() => setSearch('')}
       />
       <FriendsTable sort={sort} setSort={setSort} dataCards={dataCards} />
       <div className={s.pagination}>
-        <Pagination count={dataCards?.pagination.totalPages} page={page} onChange={setPage} />
+        <Pagination
+          count={dataCards?.pagination.totalPages}
+          page={currentPage}
+          onChange={setNewCurrentPage}
+        />
         <Typography variant={'body2'}>Показать</Typography>
         <SelectDemo
           options={options}
-          defaultValue={perPage.value}
-          onValueChange={onSetPerPageHandler}
+          defaultValue={itemsPerPage.value}
+          onValueChange={setNewPerPage}
           className={s.selectPagination}
         />
         <Typography variant={'body2'}>На странице</Typography>

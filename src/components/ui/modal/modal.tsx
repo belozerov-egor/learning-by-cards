@@ -8,6 +8,7 @@ import {
   DialogPortal,
   DialogTitle,
 } from '@radix-ui/react-dialog'
+import { motion } from 'framer-motion'
 
 import { Close } from '../../../common'
 import { Button } from '../button'
@@ -23,6 +24,11 @@ type PropsType = {
   titleButton?: string
   callBack?: () => void
 } & ComponentProps<'div'>
+
+const modalAnimation = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.3 } },
+}
 
 export const Modal: FC<PropsType> = ({
   open = false,
@@ -41,29 +47,36 @@ export const Modal: FC<PropsType> = ({
     <Dialog open={open} onOpenChange={handleModalClosed}>
       {open && (
         <DialogPortal>
-          <DialogOverlay className={s.overlay} />
-          <DialogContent className={s.content}>
-            <header className={s.header}>
-              <DialogTitle asChild>
-                <Typography variant={'h2'}>{title}</Typography>
-              </DialogTitle>
+          <motion.div
+            className={s.content}
+            variants={modalAnimation}
+            initial="hidden"
+            animate="visible"
+          >
+            <DialogOverlay className={s.overlay} />
+            <DialogContent className={s.content}>
+              <header className={s.header}>
+                <DialogTitle asChild>
+                  <Typography variant={'h2'}>{title}</Typography>
+                </DialogTitle>
 
-              {showCloseButton && (
-                <DialogClose className={s.closeButton}>
-                  <Close />
-                </DialogClose>
-              )}
-            </header>
-            <div className={s.contentBox}>{children}</div>
-            <div className={s.buttonBottom}>
-              <Button onClick={() => onClose?.()} variant={'secondary'}>
-                Cancel
-              </Button>
-              <Button variant={'primary'} onClick={callBack}>
-                {titleButton}
-              </Button>
-            </div>
-          </DialogContent>
+                {showCloseButton && (
+                  <DialogClose className={s.closeButton}>
+                    <Close />
+                  </DialogClose>
+                )}
+              </header>
+              <div className={s.contentBox}>{children}</div>
+              <div className={s.buttonBottom}>
+                <Button onClick={() => onClose?.()} variant={'secondary'}>
+                  Cancel
+                </Button>
+                <Button variant={'primary'} onClick={callBack}>
+                  {titleButton}
+                </Button>
+              </div>
+            </DialogContent>
+          </motion.div>
         </DialogPortal>
       )}
     </Dialog>

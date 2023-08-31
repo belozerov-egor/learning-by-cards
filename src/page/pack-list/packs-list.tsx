@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
-import { Trash } from '../../common'
-import useDebounce from '../../common/hooks/use-debounce.ts'
+import { Trash, useDebounce, useMutationWithToast } from '../../common'
 import {
   AddEditPackModal,
   Button,
@@ -35,16 +34,15 @@ import s from './packs-list.module.scss'
 export const PacksList = () => {
   const initialName = useAppSelector(state => state.deckSlice.searchByName)
   const tabSwitcherOptions = useAppSelector(state => state.deckSlice.tabSwitcherOptions)
-  const itemsPerPage = useAppSelector(state => state.deckSlice.itemsPerPage)
+  const itemsPerPage = useAppSelector(state => state.deckSlice.currentPerPage.packList)
   const sliderValues = useAppSelector(state => state.deckSlice.slider)
   const options = useAppSelector(state => state.deckSlice.paginationOptions)
-  const currentPage = useAppSelector(state => state.deckSlice.currentPage)
+  const currentPage = useAppSelector(state => state.deckSlice.currentPage.packList)
   const open = useAppSelector(selectOpen)
   const { privatePack, packName, img } = useAppSelector(selectPackSettings)
-
+  const hookWithToast = useMutationWithToast()
+  const [activeTab, setActiveTab] = useState(tabSwitcherOptions[1].value)
   const dispatch = useAppDispatch()
-
-  const newInitialName = useDebounce(initialName, 1000)
 
   const {
     cardId,
@@ -54,59 +52,35 @@ export const PacksList = () => {
     sort,
     setSort,
     sortedString,
-    page,
-    setPage,
     setValueSlider,
     valueSlider,
-    perPage,
-    onSetPerPageHandler,
-  } = usePackDeckState(sliderValues, currentPage, itemsPerPage)
-  const [activeTab, setActiveTab] = useState(tabSwitcherOptions[1].value)
+  } = usePackDeckState(sliderValues)
+
+  const newInitialName = useDebounce(initialName, 1000)
+
   const { data: meData } = useMeQuery()
   const { data } = useGetDecksQuery({
     name: newInitialName,
     orderBy: sortedString,
-    itemsPerPage: perPage.value,
+    itemsPerPage: itemsPerPage.value,
     authorId: userId,
     minCardsCount: valueSlider[0],
     maxCardsCount: valueSlider[1],
-    currentPage: page,
+    currentPage,
   })
   const [createDeck] = useCreateDeckMutation()
   const [deleteDeck] = useDeletedDeckMutation()
   const [editDeck] = useUpdateDeckMutation()
 
+  const setNewCurrentPage = (page: number) => {
+    dispatch(deckSlice.actions.setCurrentPage({ value: 'packList', newCurrentPage: page }))
+  }
+  const setNewPerPage = (value: number) => {
+    dispatch(deckSlice.actions.setItemsPerPage({ value: 'packList', newCurrentPage: value }))
+  }
   const setSearchByName = (event: string) => {
     dispatch(deckSlice.actions.setSearchByName(event))
   }
-
-  const addOrEditPack = () => {
-    if (open === 'addPack') {
-      const formData = new FormData()
-
-      formData.append('name', packName)
-      formData.append('isPrivate', String(privatePack))
-
-      img && formData.append('cover', img)
-      createDeck(formData)
-    } else if (open === 'editPack') {
-      const formData = new FormData()
-
-      formData.append('name', packName)
-      formData.append('isPrivate', String(privatePack))
-
-      img && formData.append('cover', img)
-      editDeck({ id: cardId, formData })
-    }
-    dispatch(modalActions.setCloseModal({}))
-    dispatch(modalActions.setClearState({}))
-  }
-  const deletePack = () => {
-    deleteDeck({ id: cardId })
-    dispatch(modalActions.setCloseModal({}))
-    dispatch(modalActions.setClearState({}))
-  }
-
   const setIsMyPackHandler = (value: boolean) => {
     dispatch(cardsSlice.actions.setIsMyPack({ isMyPack: value }))
   }
@@ -114,19 +88,45 @@ export const PacksList = () => {
     setActiveTab(value)
     if (value === 'My Cards') {
       setUserId(meData!.id)
+      dispatch(deckSlice.actions.setCurrentPage({ value: 'packList', newCurrentPage: 1 }))
     } else {
       setUserId('')
     }
   }
-
   const clearFilterData = () => {
     setSearchByName('')
-    handleTabSort('All cards')
-    setActiveTab(tabSwitcherOptions[1].value)
+    handleTabSort('All Cards')
+    setActiveTab('All Cards')
     setValueSlider([sliderValues.minValue, sliderValues.maxValue])
     setSort({ key: 'updated', direction: 'asc' })
   }
+  const addOrEditPack = async () => {
+    if (open === 'addPack') {
+      const formData = new FormData()
 
+      formData.append('name', packName)
+      formData.append('isPrivate', String(privatePack))
+      img && formData.append('cover', img)
+
+      await hookWithToast(createDeck(formData), 'Колода успешно добавлена')
+    } else if (open === 'editPack') {
+      const formData = new FormData()
+
+      formData.append('name', packName)
+      formData.append('isPrivate', String(privatePack))
+      img && formData.append('cover', img)
+
+      await hookWithToast(editDeck({ id: cardId, formData }), 'Колода успешно обновлена')
+    }
+    dispatch(modalActions.setCloseModal({}))
+    dispatch(modalActions.setClearState({}))
+  }
+  const deletePack = async () => {
+    await hookWithToast(deleteDeck({ id: cardId }), 'Колода успешно удалена')
+
+    dispatch(modalActions.setCloseModal({}))
+    dispatch(modalActions.setClearState({}))
+  }
   const setOpen = () => {
     dispatch(modalActions.setOpenModal('addPack'))
   }
@@ -142,8 +142,8 @@ export const PacksList = () => {
       <div className={s.settingsBlock}>
         <TextField
           value={initialName}
-          type={'searchType'}
           placeholder={'Type to find...'}
+          type={'searchType'}
           className={s.textField}
           onChangeText={event => setSearchByName(event)}
           onSearchClear={() => setSearchByName('')}
@@ -155,7 +155,7 @@ export const PacksList = () => {
           <TabSwitcher
             onChangeCallback={value => handleTabSort(value)}
             options={tabSwitcherOptions}
-            className={s.switcher}
+            classname={s.switcher}
             activeTab={activeTab}
           />
         </div>
@@ -183,12 +183,16 @@ export const PacksList = () => {
         setSort={setSort}
       />
       <div className={s.pagination}>
-        <Pagination count={data?.pagination.totalPages} page={page} onChange={setPage} />
+        <Pagination
+          count={data?.pagination.totalPages}
+          page={currentPage}
+          onChange={setNewCurrentPage}
+        />
         <Typography variant={'body2'}>Показать</Typography>
         <SelectDemo
           options={options}
-          defaultValue={perPage.value}
-          onValueChange={onSetPerPageHandler}
+          defaultValue={itemsPerPage.value}
+          onValueChange={setNewPerPage}
           className={s.selectPagination}
         />
         <Typography variant={'body2'}>На странице</Typography>

@@ -1,9 +1,9 @@
 import { FC } from 'react'
 
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
-import { Logo, Logout, Profile } from '../../../common'
+import { Logo, Logout, Profile, useMutationWithToast } from '../../../common'
 import { ResponseUserType, useLogoutMutation } from '../../../services'
 import { AvatarDemo } from '../avatar'
 import { Button } from '../button'
@@ -18,12 +18,20 @@ type HeaderProps = {
 }
 export const Header: FC<HeaderProps> = ({ data }) => {
   const [logout] = useLogoutMutation()
+  const hookWithToast = useMutationWithToast()
+  const navigate = useNavigate()
 
-  const logoutHandler = () => {
-    logout()
-      .unwrap()
-      .then(() => toast.success('Всего хорошего'))
-      .catch(() => toast.error('Что-то пошло не так'))
+  const logoutHandler = async () => {
+    if (!navigator.onLine) {
+      toast.error("Can't perform logout while offline")
+
+      return
+    }
+    const result = await hookWithToast(logout(), 'Всего хорошего')
+
+    if (result?.success) {
+      navigate('/login')
+    }
   }
 
   const dropDownMenu = [
@@ -51,15 +59,17 @@ export const Header: FC<HeaderProps> = ({ data }) => {
   return (
     <div className={s.headerBlock}>
       <div className={s.contentHeader}>
-        <Button as={Link} to="/" variant={'link'} className={s.logo}>
+        <Button aria-label={'to-main-page'} as={Link} to="/" variant={'link'} className={s.logo}>
           <Logo />
         </Button>
         {!data && <Button variant={'primary'}>Sign In</Button>}
         {data && (
           <div className={s.avatar_menu}>
-            <Typography variant={'subtitle1'} className={s.menu_name}>
-              {data.name}
-            </Typography>
+            <Link to={`/profile`} className={s.link}>
+              <Typography variant={'subtitle1'} className={s.menu_name}>
+                {data.name}
+              </Typography>
+            </Link>
             <DropDownMenuDemo
               items={dropDownMenu}
               trigger={<AvatarDemo src={data.avatar} name={data.name} />}

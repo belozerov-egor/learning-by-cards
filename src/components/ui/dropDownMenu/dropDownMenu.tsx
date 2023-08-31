@@ -3,10 +3,6 @@ import { FC, ReactNode } from 'react'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { motion } from 'framer-motion'
 
-import { Avatar, Logout, Profile } from '../../../common'
-import { Button } from '../button'
-import { Typography } from '../typography'
-
 import s from './dropDownMenu.module.scss'
 
 type DropDownMenuPropsType = {
@@ -16,33 +12,14 @@ type DropDownMenuPropsType = {
     component: JSX.Element
   }[]
 }
-const dropDownMenu = [
-  {
-    id: 1,
-    component: (
-      <Button variant={'link'} className={s.buttonDrop}>
-        <Profile />
-        <Typography variant={'caption'}>My Profile</Typography>
-      </Button>
-    ),
-  },
-  {
-    id: 2,
-    component: (
-      <Button variant={'link'} className={s.buttonDrop}>
-        <Logout />
-        <Typography variant={'caption'}>Sign Out</Typography>
-      </Button>
-    ),
-  },
-]
+
 const container = {
   hidden: { opacity: 1, scale: 0 },
   visible: {
     opacity: 1,
     scale: 1,
     transition: {
-      delayChildren: 0.05,
+      delayChildren: 0.2,
       staggerChildren: 0.1,
     },
   },
@@ -55,10 +32,7 @@ const motionItem = {
   },
 }
 
-export const DropDownMenuDemo: FC<DropDownMenuPropsType> = ({
-  items = dropDownMenu,
-  trigger = <Avatar />,
-}) => {
+export const DropDownMenuDemo: FC<DropDownMenuPropsType> = ({ items, trigger }) => {
   const itemsForRender = items?.map((item, index) => {
     return (
       <div key={index}>

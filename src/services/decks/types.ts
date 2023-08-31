@@ -1,4 +1,4 @@
-import { PaginatedRequest, Pagination } from '../types'
+import { PaginatedEntity, PaginatedRequest } from '../types.ts'
 
 export type GetDecksArgs = PaginatedRequest<{
   minCardsCount?: number
@@ -8,16 +8,20 @@ export type GetDecksArgs = PaginatedRequest<{
   orderBy: string | null
 }>
 
-export type DecksResponse = {
+export type DecksResponse = PaginatedEntity<Deck> & {
   maxCardsCount: number
-  pagination: Pagination
-  items: Deck[]
+}
+
+export type CreateGetDeckArgs = {
+  name: string
+  isPrivate?: boolean
 }
 
 export type Author = {
   id: string
   name: string
 }
+
 export type Deck = {
   id: string
   userId: string
@@ -32,6 +36,24 @@ export type Deck = {
   updated: string
   cardsCount: number
   author: Author
+}
+
+export type DeckResponse = {
+  author: DeckResponseAuthor
+  id: string
+  userId: string
+  name: string
+  isPrivate: boolean
+  shots: number
+  cover: string
+  grade: number
+  created: string
+  updated: string
+  cardsCount: number
+}
+export type DeckResponseAuthor = {
+  id: string
+  name: string
 }
 
 export type LearnDeckResponse = {
@@ -49,3 +71,4 @@ export type LearnDeckResponse = {
   created: string
   updated: string
 }
+export type NameTypePack = 'packList' | 'friendsPack' | 'myPack'

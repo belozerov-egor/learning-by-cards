@@ -1,6 +1,4 @@
 .dropDownBlock {
-  left: -60px;
-
   button {
     all: unset;
     cursor: pointer;
@@ -11,6 +9,7 @@
   cursor: pointer;
   background-color: transparent;
   border: none;
+  outline: none;
 }
 
 .dropdownMenuContent {
@@ -37,11 +36,23 @@
   border-radius: 3px;
   outline: none;
 
+  .dropdownMenuItemInfo {
+    display: flex;
+    gap: 0.38rem;
+    align-items: center;
+  }
+
   .dropdownMenuItemContent {
     cursor: pointer;
     display: flex;
     gap: 0.38rem;
     align-items: center;
+  }
+
+  .info {
+    .email {
+      color: var(--color-dark-100);
+    }
   }
 }
 

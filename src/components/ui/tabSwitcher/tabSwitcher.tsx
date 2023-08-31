@@ -7,12 +7,12 @@ import { Typography } from '../typography'
 import s from './tabSwitcher.module.scss'
 
 type PropsType = {
-  className?: string
+  classname?: string
   options?: any[]
   onChangeCallback?: (value: string) => void
   activeTab?: string
 }
-export const TabSwitcher: FC<PropsType> = ({ options, onChangeCallback, className, activeTab }) => {
+export const TabSwitcher: FC<PropsType> = ({ options, onChangeCallback, classname, activeTab }) => {
   return (
     <div key={activeTab}>
       <Tabs.Root className={s.tabsRoot} onValueChange={onChangeCallback}>
@@ -21,7 +21,7 @@ export const TabSwitcher: FC<PropsType> = ({ options, onChangeCallback, classNam
             return (
               <Tabs.Trigger
                 data-state={tab.value === activeTab ? 'active' : ''}
-                className={`${s.tabsTrigger} ${className}`}
+                className={`${s.tabsTrigger} ${classname}`}
                 value={tab.value}
                 key={index}
               >

@@ -11,7 +11,7 @@ import s from './select.module.scss'
 export type SelectPropsType = {
   label?: string
   placeholder?: ReactNode
-  value?: any
+  value?: string
   onValueChange?: (value: any) => void
   defaultValue?: any
   options: any[]
@@ -49,6 +49,7 @@ export const SelectDemo: FC<SelectPropsType> = ({
       <Select.Trigger
         className={`${disabled ? s.triggerDisabled : s.trigger} ${className}`}
         asChild
+        aria-label={'select'}
         tabIndex={1}
       >
         <div>
