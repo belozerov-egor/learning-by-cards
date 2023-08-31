@@ -16,7 +16,7 @@ Here you can select the deck you would like to learn, delete or edit. You can al
 ![](src/common/assets/img/addDeck.png)
 ![](src/common/assets/img/deleteDeck.png)
 ![](src/common/assets/img/learn1.png)
-![](src/common/assets/img/learn2.png
+![](src/common/assets/img/learn2.png)
 
 Also going to the deck page, you can add question and answer cards. As well as the necessary interaction functions (add, edit, delete)
 ![](src/common/assets/img/deckPage.png)
