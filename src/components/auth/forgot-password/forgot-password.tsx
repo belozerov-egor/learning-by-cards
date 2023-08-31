@@ -24,7 +24,7 @@ export const ForgotPassword = () => {
   const onSubmit = (data: SignInFormShem) => {
     forgotPassword({
       ...data,
-      html: `<h1>Hi, ##name##</h1><p>Click <a href="http://localhost:5173/recover-password/##token##">here</a> to recover your password</p>`,
+      html: `<h1>Hi, ##name##</h1><p>Click <a href="http://learning-by-cards.vercel.app/recover-password/##token##">here</a> to recover your password</p>`,
     })
     navigate(`/check-email/${data.email}`)
   }
