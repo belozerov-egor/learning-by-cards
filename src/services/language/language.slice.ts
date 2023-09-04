@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 type initialStateType = {
-  value: string | null
+  value: string
 }
 
 const initialState: initialStateType = {
-  value: localStorage.getItem('i18nextLng'),
+  value: localStorage.getItem('i18nextLng') || 'en',
 }
 
 export const languageSlice = createSlice({
