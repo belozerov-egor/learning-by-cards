@@ -4,6 +4,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { baseApi } from './base-api'
 import { cardsSlice } from './cards'
 import { deckSlice } from './decks'
+import { languageSlice } from './language/language.slice.ts'
 import { modalSlice } from './modal'
 
 export const store = configureStore({
@@ -12,6 +13,7 @@ export const store = configureStore({
     [deckSlice.name]: deckSlice.reducer,
     [cardsSlice.name]: cardsSlice.reducer,
     [modalSlice.name]: modalSlice.reducer,
+    [languageSlice.name]: languageSlice.reducer,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(baseApi.middleware),
 })

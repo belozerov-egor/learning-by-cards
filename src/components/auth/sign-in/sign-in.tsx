@@ -2,6 +2,7 @@ import { FC } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { z } from 'zod'
 
@@ -21,6 +22,7 @@ type PropsType = {
   onSubmit: (data: SignInFormShem) => void
 }
 export const SignIn: FC<PropsType> = ({ onSubmit }) => {
+  const { t } = useTranslation()
   const { control, handleSubmit } = useForm<SignInFormShem>({
     defaultValues: {
       email: '',
@@ -34,7 +36,7 @@ export const SignIn: FC<PropsType> = ({ onSubmit }) => {
   return (
     <Card className={s.signBlock}>
       <Typography className={s.title} variant={'large'}>
-        Sign In
+        {t('sign-in.head')}
       </Typography>
       <form onSubmit={handleSubmitForm}>
         <ControlledTextField

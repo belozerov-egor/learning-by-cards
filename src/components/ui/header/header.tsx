@@ -8,6 +8,7 @@ import { ResponseUserType, useLogoutMutation } from '../../../services'
 import { AvatarDemo } from '../avatar'
 import { Button } from '../button'
 import { DropDownMenuDemo } from '../dropDownMenu'
+import { LanguageTheme } from '../language-theme/language-theme.tsx'
 import { Typography } from '../typography'
 
 import s from './header.module.scss'
@@ -59,9 +60,13 @@ export const Header: FC<HeaderProps> = ({ data }) => {
   return (
     <div className={s.headerBlock}>
       <div className={s.contentHeader}>
-        <Button aria-label={'to-main-page'} as={Link} to="/" variant={'link'} className={s.logo}>
-          <Logo />
-        </Button>
+        <div className={s.logoBlock}>
+          <Button aria-label={'to-main-page'} as={Link} to="/" variant={'link'} className={s.logo}>
+            <Logo />
+          </Button>
+          <LanguageTheme />
+        </div>
+
         {!data && <Button variant={'primary'}>Sign In</Button>}
         {data && (
           <div className={s.avatar_menu}>
