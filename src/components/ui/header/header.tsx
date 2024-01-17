@@ -1,18 +1,17 @@
-import { FC } from 'react'
+import {FC} from 'react'
 
-import { Link, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
+import {Link, useNavigate} from 'react-router-dom'
+import {toast} from 'react-toastify'
 
-import { Logo, Logout, Profile, useMutationWithToast } from '../../../common'
-import { ResponseUserType, useLogoutMutation } from '../../../services'
-import { AvatarDemo } from '../avatar'
-import { Button } from '../button'
-import { DropDownMenuDemo } from '../dropDownMenu'
-import { LanguageTheme } from '../language-theme/language-theme.tsx'
-import { Typography } from '../typography'
+import {Logout, Profile, useMutationWithToast} from '../../../common'
+import {ResponseUserType, useLogoutMutation} from '../../../services'
+import {AvatarDemo} from '../avatar'
+import {Button} from '../button'
+import {DropDownMenuDemo} from '../dropDownMenu'
+import {Typography} from '../typography'
 
 import s from './header.module.scss'
-import { ProfileBlock } from './profile-block'
+import {ProfileBlock} from './profile-block'
 
 type HeaderProps = {
   data?: ResponseUserType | null
@@ -62,9 +61,9 @@ export const Header: FC<HeaderProps> = ({ data }) => {
       <div className={s.contentHeader}>
         <div className={s.logoBlock}>
           <Button aria-label={'to-main-page'} as={Link} to="/" variant={'link'} className={s.logo}>
-            <Logo />
+            <Typography variant={'h1'}>CARDS</Typography>
           </Button>
-          <LanguageTheme />
+          {/*<LanguageTheme />*/}
         </div>
 
         {!data && <Button variant={'primary'}>Sign In</Button>}
